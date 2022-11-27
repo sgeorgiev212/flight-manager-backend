@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.CreateFlightRequestDto;
-import com.example.demo.model.dto.CreateFlightResponseDto;
+import com.example.demo.model.dto.flight.CreateFlightRequestDto;
+import com.example.demo.model.dto.flight.CreateFlightResponseDto;
 import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
 import com.example.demo.model.dto.airline.CreateAirlineResponseDto;
 import com.example.demo.model.dto.airport.CreateAirportDto;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.text.ParseException;
 
 @RestController
 @RequestMapping("/admin")

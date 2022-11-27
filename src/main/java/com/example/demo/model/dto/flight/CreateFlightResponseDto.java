@@ -1,4 +1,4 @@
-package com.example.demo.model.dto;
+package com.example.demo.model.dto.flight;
 
 import com.example.demo.model.entity.Flight;
 import lombok.AllArgsConstructor;
