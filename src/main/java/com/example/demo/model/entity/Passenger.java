@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +33,9 @@ public class Passenger {
     private String address;
 
     private String role;
+
+    @OneToMany(mappedBy = "passengerHasBooking")
+    private List<BookingRequest> bookingRequests;
 
     public Passenger(RegisterPassengerRequestDto registerPassengerDto) {
         this.firstName = registerPassengerDto.getFirstName();

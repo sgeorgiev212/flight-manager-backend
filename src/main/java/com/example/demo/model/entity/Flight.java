@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,5 +38,8 @@ public class Flight {
     private Airline airline;
 
     private String status;
+
+    @OneToMany(mappedBy = "flight")
+    private List<BookingRequest> bookingRequests;
 
 }

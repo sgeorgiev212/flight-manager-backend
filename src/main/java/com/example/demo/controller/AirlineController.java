@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
-import com.example.demo.model.dto.flight.CreateFlightRequestDto;
-import com.example.demo.model.dto.flight.CreateFlightResponseDto;
-import com.example.demo.model.dto.flight.EditFlightDto;
-import com.example.demo.model.dto.flight.FLightDto;
+import com.example.demo.model.dto.flight.*;
 import com.example.demo.service.AirlineService;
 import com.example.demo.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +43,15 @@ public class AirlineController {
     @PutMapping("/flights/{flightId}")
     public FLightDto cancelFlight(@PathVariable int flightId){
         return flightService.cancelFlight(flightId);
+    }
+
+    @GetMapping
+    public List<AirlineDto> getAllAirlines(){
+        return airlineService.getAllAirlines();
+    }
+
+    @GetMapping("/{id}/bookings")
+    public List<BookingRequestDto> getAllBookingRequestsForAirline(@PathVariable int id){
+        return airlineService.getAllBookingRequestsForAirline(id);
     }
 }

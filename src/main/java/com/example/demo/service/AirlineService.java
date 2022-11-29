@@ -1,15 +1,20 @@
 package com.example.demo.service;
 
 import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
-import com.example.demo.model.dto.airline.CreateAirlineResponseDto;
+import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
+import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.flight.FLightDto;
+import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
 import com.example.demo.model.entity.Airline;
+import com.example.demo.model.entity.BookingRequest;
 import com.example.demo.model.entity.Flight;
 import com.example.demo.repository.AirlineRepository;
+import com.example.demo.repository.BookingRequestRepository;
 import com.example.demo.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -28,12 +33,15 @@ public class AirlineService {
     @Autowired
     FlightRepository flightRepository;
 
-    public CreateAirlineResponseDto registerAirline(CreateAirlineRequestDto createAirlineRequestDto) {
+    @Autowired
+    BookingRequestRepository bookingRequestRepository;
+
+    public AirlineDto registerAirline(CreateAirlineRequestDto createAirlineRequestDto) {
         validateAirlineRegistration(createAirlineRequestDto);
         Airline airline = new Airline(createAirlineRequestDto);
         airline.setStatus(CREATED_STATUS);
         airline = airlineRepository.save(airline);
-        return new CreateAirlineResponseDto(airline);
+        return new AirlineDto(airline);
     }
 
     public List<FLightDto> getAllFlightsForAirline(int airlineId) {
@@ -71,13 +79,41 @@ public class AirlineService {
         return endDateAndTimeForCurrentDay;
     }
 
+    public List<AirlineDto> getAllAirlines() {
+        List<Airline> registeredAgencies = airlineRepository.findAllCreatedAirlines();
+        if (registeredAgencies == null || registeredAgencies.size() == 0) {
+            throw new IllegalArgumentException("No created agencies found!");
+        }
+
+        return registeredAgencies.stream()
+                .map(airline -> new AirlineDto(airline))
+                .collect(Collectors.toList());
+    }
+
+    public List<BookingRequestDto> getAllBookingRequestsForAirline(int airlineId) {
+        if (airlineRepository.findById(airlineId).get() == null) {
+            throw new IllegalArgumentException("Airline with id: " + airlineId + " was not found!");
+        }
+
+        return bookingRequestRepository.findByAirlineId(airlineId).stream()
+                .map(bookingRequest -> new BookingRequestDto(bookingRequest))
+                .collect(Collectors.toList());
+    }
+
     private void validateAirlineRegistration(CreateAirlineRequestDto createAirlineRequestDto) {
-        if (createAirlineRequestDto.getName().length() < 3) {
+        String airlineName = createAirlineRequestDto.getName();
+        String airlineAddress = createAirlineRequestDto.getAddress();
+
+        if (airlineName == null || airlineName.length() < 3) {
             throw new IllegalArgumentException("Airline name must be at least 3 characters long!");
         }
 
-        if (createAirlineRequestDto.getAddress().length() < 10) {
+        if (airlineAddress == null || airlineAddress.length() < 10) {
             throw new IllegalArgumentException("Airline address must be at least 10 characters long!");
+        }
+
+        if (airlineRepository.findByName(airlineName) != null) {
+            throw new IllegalArgumentException("Airline with name: " + airlineName + " already exists!");
         }
     }
 }

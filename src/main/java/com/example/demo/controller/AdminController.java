@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.dto.flight.CreateFlightRequestDto;
 import com.example.demo.model.dto.flight.CreateFlightResponseDto;
 import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
-import com.example.demo.model.dto.airline.CreateAirlineResponseDto;
+import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airport.CreateAirportDto;
 import com.example.demo.model.dto.airport.CreateAirportResponseDto;
 import com.example.demo.service.AirlineService;
@@ -34,7 +34,7 @@ public class AdminController {
     }
 
     @PostMapping("/airline")
-    public CreateAirlineResponseDto registerAirline(@RequestBody CreateAirlineRequestDto createAirlineRequestDto){
+    public AirlineDto registerAirline(@RequestBody CreateAirlineRequestDto createAirlineRequestDto){
         return airlineService.registerAirline(createAirlineRequestDto);
     }
 

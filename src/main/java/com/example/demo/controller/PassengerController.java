@@ -26,4 +26,6 @@ public class PassengerController {
         return passengerService.login(loginRequestDto);
     }
 
+//    public void getAllBookings
+
 }

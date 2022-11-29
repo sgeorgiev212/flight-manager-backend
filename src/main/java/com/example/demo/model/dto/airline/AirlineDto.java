@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAirlineResponseDto {
+public class AirlineDto {
 
     private int id;
 
@@ -20,7 +20,7 @@ public class CreateAirlineResponseDto {
 
     private String status;
 
-    public CreateAirlineResponseDto(Airline airline) {
+    public AirlineDto(Airline airline) {
         this.id = airline.getId();
         this.name = airline.getName();
         this.address = airline.getAddress();

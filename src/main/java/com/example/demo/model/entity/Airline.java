@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +26,9 @@ public class Airline {
     private String address;
 
     private String status;
+
+    @OneToMany(mappedBy = "airline")
+    private List<BookingRequest> bookingRequests;
 
     public Airline(CreateAirlineRequestDto createAirlineRequestDto) {
         this.name = createAirlineRequestDto.getName();

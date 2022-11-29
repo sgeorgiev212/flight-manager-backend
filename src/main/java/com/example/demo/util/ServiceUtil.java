@@ -8,6 +8,9 @@ public class ServiceUtil {
     public static final String CREATED_STATUS = "CREATED";
 
     public static final String ACTIVE_FLIGHT_STATUS = "ACTIVE";
+
     public static final String CANCELED_FLIGHT_STATUS = "CANCELED";
+
+    public static final String REGISTERED_TRAVEL_AGENCY_STATUS = "REGISTERED";
 
 }
