@@ -37,6 +37,9 @@ public class Passenger {
     @OneToMany(mappedBy = "passengerHasBooking")
     private List<BookingRequest> bookingRequests;
 
+    @OneToMany(mappedBy = "passenger")
+    private List<Ticket> tickets;
+
     public Passenger(RegisterPassengerRequestDto registerPassengerDto) {
         this.firstName = registerPassengerDto.getFirstName();
         this.lastName = registerPassengerDto.getLastName();

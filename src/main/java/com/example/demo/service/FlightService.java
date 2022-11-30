@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.flight.*;
 import com.example.demo.model.entity.*;
 import com.example.demo.repository.*;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.example.demo.util.ServiceUtil.ACTIVE_FLIGHT_STATUS;
 import static com.example.demo.util.ServiceUtil.CANCELED_FLIGHT_STATUS;
@@ -117,6 +120,23 @@ public class FlightService {
 
         bookingRequest = bookingRequestRepository.save(bookingRequest);
         return new BookingRequestDto(bookingRequest);
+    }
+
+    public List<TicketDto> getBookedTicketsForFlight(int id) {
+        Optional<Flight> flightFromDB = flightRepository.findById(id);
+        if (flightFromDB.isEmpty()) {
+            throw new IllegalArgumentException("FLight with id: " + id + " was not found!");
+        }
+
+        Flight flight = flightFromDB.get();
+        return flight.getTickets().stream()
+                .map(ticket -> new TicketDto(ticket))
+                .collect(Collectors.toList());
+    }
+
+    public Flight findFlightById(int flightId) {
+        Optional<Flight> flight = flightRepository.findById(flightId);
+        return (flight.isPresent()) ? flight.get() : null;
     }
 
     private void validateBookFLightRequestDto(BookFlightRequestDto bookFlightRequestDto) {

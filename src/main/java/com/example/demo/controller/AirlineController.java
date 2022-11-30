@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.dto.CreateTicketRequestDto;
+import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.*;
@@ -41,17 +43,22 @@ public class AirlineController {
     }
 
     @PutMapping("/flights/{flightId}")
-    public FLightDto cancelFlight(@PathVariable int flightId){
+    public FLightDto cancelFlight(@PathVariable int flightId) {
         return flightService.cancelFlight(flightId);
     }
 
     @GetMapping
-    public List<AirlineDto> getAllAirlines(){
+    public List<AirlineDto> getAllAirlines() {
         return airlineService.getAllAirlines();
     }
 
     @GetMapping("/{id}/bookings")
-    public List<BookingRequestDto> getAllBookingRequestsForAirline(@PathVariable int id){
+    public List<BookingRequestDto> getAllBookingRequestsForAirline(@PathVariable int id) {
         return airlineService.getAllBookingRequestsForAirline(id);
+    }
+
+    @PostMapping("/tickets")
+    public TicketDto createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
+        return airlineService.createTicket(createTicketRequestDto);
     }
 }

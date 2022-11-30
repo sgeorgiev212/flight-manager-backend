@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.demo.util.ServiceUtil.REGISTERED_TRAVEL_AGENCY_STATUS;
@@ -30,7 +31,7 @@ public class TravelAgencyService {
             throw new IllegalArgumentException("Travel agency address length must be at least 3 characters!");
         }
 
-        if(travelAgencyRepository.findByName(agencyName) != null){
+        if (travelAgencyRepository.findByName(agencyName) != null) {
             throw new IllegalArgumentException("Travel agency with name: " + agencyName + " already exists!");
         }
 
@@ -46,13 +47,18 @@ public class TravelAgencyService {
     public List<TravelAgencyDto> getAllRegisteredAgencies() throws Exception {
         List<TravelAgency> registeredAgencies = travelAgencyRepository.findAllRegisteredAgencies();
 
-        if(registeredAgencies == null || registeredAgencies.size() == 0){
+        if (registeredAgencies == null || registeredAgencies.size() == 0) {
             throw new Exception("No registered travel agencies found!");
         }
 
         return registeredAgencies.stream()
                 .map(agency -> new TravelAgencyDto(agency))
                 .collect(Collectors.toList());
+    }
+
+    public TravelAgency findAgencyById(int agencyId) {
+        Optional<TravelAgency> travelAgency = travelAgencyRepository.findById(agencyId);
+        return (travelAgency.isPresent()) ? travelAgency.get() : null;
     }
 
 }

@@ -30,6 +30,9 @@ public class Airline {
     @OneToMany(mappedBy = "airline")
     private List<BookingRequest> bookingRequests;
 
+    @OneToMany(mappedBy = "airline")
+    private List<Ticket> tickets;
+
     public Airline(CreateAirlineRequestDto createAirlineRequestDto) {
         this.name = createAirlineRequestDto.getName();
         this.address = createAirlineRequestDto.getAddress();

@@ -1,14 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.model.dto.CreateTicketRequestDto;
+import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
 import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.flight.FLightDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
-import com.example.demo.model.entity.Airline;
-import com.example.demo.model.entity.BookingRequest;
-import com.example.demo.model.entity.Flight;
+import com.example.demo.model.entity.*;
 import com.example.demo.repository.AirlineRepository;
 import com.example.demo.repository.BookingRequestRepository;
 import com.example.demo.repository.FlightRepository;
@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.demo.util.ServiceUtil.CREATED_STATUS;
@@ -35,6 +36,15 @@ public class AirlineService {
 
     @Autowired
     BookingRequestRepository bookingRequestRepository;
+
+    @Autowired
+    PassengerService passengerService;
+
+    @Autowired
+    TravelAgencyService travelAgencyService;
+
+    @Autowired
+    TicketService ticketService;
 
     public AirlineDto registerAirline(CreateAirlineRequestDto createAirlineRequestDto) {
         validateAirlineRegistration(createAirlineRequestDto);
@@ -98,6 +108,39 @@ public class AirlineService {
         return bookingRequestRepository.findByAirlineId(airlineId).stream()
                 .map(bookingRequest -> new BookingRequestDto(bookingRequest))
                 .collect(Collectors.toList());
+    }
+
+    public Airline findAirlineById(int airlineId) {
+        Optional<Airline> airline = airlineRepository.findById(airlineId);
+        return (airline.isPresent()) ? airline.get() : null;
+    }
+
+    public TicketDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
+        validateTicketRequestDto(createTicketRequestDto);
+        return ticketService.createTicket(createTicketRequestDto);
+    }
+
+    private void validateTicketRequestDto(CreateTicketRequestDto createTicketRequestDto) {
+        int passengerId = createTicketRequestDto.getPassengerId();
+        int flightId = createTicketRequestDto.getFlightId();
+        int agencyId = createTicketRequestDto.getAgencyId();
+        int airlineId = createTicketRequestDto.getAirlineId();
+
+        if (passengerService.findPassengerById(passengerId) == null) {
+            throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
+        }
+
+        if (flightRepository.findById(flightId) == null) {
+            throw new IllegalArgumentException("Flight with id: " + flightId + " was not found!");
+        }
+
+        if (travelAgencyService.findAgencyById(agencyId) == null) {
+            throw new IllegalArgumentException("Travel agency with id: " + agencyId + " was not found!");
+        }
+
+        if (airlineRepository.findById(airlineId).get() == null) {
+            throw new IllegalArgumentException("Airline with id: " + airlineId + " was not found!");
+        }
     }
 
     private void validateAirlineRegistration(CreateAirlineRequestDto createAirlineRequestDto) {

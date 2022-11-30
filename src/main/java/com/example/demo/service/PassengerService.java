@@ -80,6 +80,11 @@ public class PassengerService {
         registerPassengerRequestDto.setPassword(encodedPassword);
     }
 
+    public Passenger findPassengerById(int passengerId){
+        Optional<Passenger> passenger = passengerRepository.findById(passengerId);
+        return (passenger.isPresent()) ? passenger.get() : null;
+    }
+
     private RegisterPassengerResponseDto getRegisterResponse(Passenger passenger) {
         return new RegisterPassengerResponseDto(passenger);
     }

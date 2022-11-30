@@ -29,4 +29,7 @@ public class TravelAgency {
     @OneToMany(mappedBy = "travelAgency")
     private List<BookingRequest> bookingRequests;
 
+    @OneToMany(mappedBy = "travelAgency")
+    private List<Ticket> tickets;
+
 }
