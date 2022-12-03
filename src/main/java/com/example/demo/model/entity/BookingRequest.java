@@ -1,5 +1,6 @@
 package com.example.demo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,18 +21,22 @@ public class BookingRequest {
     private int id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="passenger_id")
     private Passenger passengerHasBooking;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="agency_id")
     private TravelAgency travelAgency;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="airline_id")
     private Airline airline;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="flight_id")
     private Flight flight;
 

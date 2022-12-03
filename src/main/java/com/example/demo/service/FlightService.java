@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.flight.*;
+import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.entity.*;
 import com.example.demo.repository.*;
-import lombok.Lombok;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -125,13 +125,31 @@ public class FlightService {
     public List<TicketDto> getBookedTicketsForFlight(int id) {
         Optional<Flight> flightFromDB = flightRepository.findById(id);
         if (flightFromDB.isEmpty()) {
-            throw new IllegalArgumentException("FLight with id: " + id + " was not found!");
+            throw new IllegalArgumentException("Flight with id: " + id + " was not found!");
         }
 
         Flight flight = flightFromDB.get();
         return flight.getTickets().stream()
                 .map(ticket -> new TicketDto(ticket))
                 .collect(Collectors.toList());
+    }
+
+    public List<PassengerDto> getAllPassengersForFlight(int flightId) {
+        Flight flight = findFlightById(flightId);
+        if (flight == null) {
+            throw new IllegalArgumentException("Flight with id: " + flightId + " was not found!");
+        }
+
+        List<Passenger> passengers = flight.getTickets().stream()
+                .map(Ticket::getPassenger)
+                .collect(Collectors.toList());
+
+        return passengers.stream()
+                .map(passenger -> new PassengerDto(passenger))
+                .collect(Collectors.toList());
+//        return flight.getTickets().stream()
+//                .map(ticket -> new PassengerDto(ticket.getPassenger()))
+//                .collect(Collectors.toList());
     }
 
     public Flight findFlightById(int flightId) {

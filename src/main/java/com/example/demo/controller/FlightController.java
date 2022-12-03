@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.flight.BookFlightRequestDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
+import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,4 +27,8 @@ public class FlightController {
         return flightService.getBookedTicketsForFlight(id);
     }
 
+    @GetMapping("/{id}/passengers")
+    public List<PassengerDto> getAllPassengersForFlight(@PathVariable int id) {
+        return flightService.getAllPassengersForFlight(id);
+    }
 }

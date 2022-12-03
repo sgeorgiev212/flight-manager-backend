@@ -2,6 +2,7 @@ package com.example.demo.model.entity;
 
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.util.PassengerUtil;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,9 +36,11 @@ public class Passenger {
     private String role;
 
     @OneToMany(mappedBy = "passengerHasBooking")
+    @JsonManagedReference
     private List<BookingRequest> bookingRequests;
 
     @OneToMany(mappedBy = "passenger")
+    @JsonManagedReference
     private List<Ticket> tickets;
 
     public Passenger(RegisterPassengerRequestDto registerPassengerDto) {

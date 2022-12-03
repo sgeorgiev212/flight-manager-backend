@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.LoginRequestDto;
-import com.example.demo.model.dto.passenger.LoginResponseDto;
+import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
 import com.example.demo.model.entity.Passenger;
@@ -38,7 +38,7 @@ public class PassengerService {
 
     }
 
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public PassengerDto login(LoginRequestDto loginRequestDto) {
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
 
@@ -51,7 +51,7 @@ public class PassengerService {
             if (!encoder.matches(password, encryptedPassword)) {
                 throw new IllegalArgumentException("Wrong password!");
             }
-            return new LoginResponseDto(passenger.get());
+            return new PassengerDto(passenger.get());
         } else {
             throw new IllegalArgumentException("Passenger with email: " + email + " was not found!");
         }

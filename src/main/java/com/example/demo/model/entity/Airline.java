@@ -1,6 +1,7 @@
 package com.example.demo.model.entity;
 
 import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,11 @@ public class Airline {
     private String status;
 
     @OneToMany(mappedBy = "airline")
+    @JsonManagedReference
     private List<BookingRequest> bookingRequests;
 
     @OneToMany(mappedBy = "airline")
+    @JsonManagedReference
     private List<Ticket> tickets;
 
     public Airline(CreateAirlineRequestDto createAirlineRequestDto) {

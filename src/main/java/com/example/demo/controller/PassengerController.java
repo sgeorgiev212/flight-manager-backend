@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.dto.TicketDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.LoginRequestDto;
-import com.example.demo.model.dto.passenger.LoginResponseDto;
+import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
 import com.example.demo.service.PassengerService;
@@ -25,7 +25,7 @@ public class PassengerController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
+    public PassengerDto login(@RequestBody LoginRequestDto loginRequestDto) {
         return passengerService.login(loginRequestDto);
     }
 
