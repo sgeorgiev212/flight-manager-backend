@@ -2,19 +2,18 @@ package com.example.demo.service;
 
 import com.example.demo.model.dto.CreateTicketRequestDto;
 import com.example.demo.model.dto.TicketDto;
-import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
 import com.example.demo.model.dto.airline.AirlineDto;
+import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.flight.FLightDto;
-import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
-import com.example.demo.model.entity.*;
+import com.example.demo.model.entity.Airline;
+import com.example.demo.model.entity.Flight;
 import com.example.demo.repository.AirlineRepository;
 import com.example.demo.repository.BookingRequestRepository;
 import com.example.demo.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
