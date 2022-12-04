@@ -35,4 +35,8 @@ public class TravelAgency {
     @JsonManagedReference
     private List<Ticket> tickets;
 
+    @OneToMany(mappedBy = "travelAgency")
+    @JsonManagedReference
+    private List<TravelAgencyReview> reviews;
+
 }

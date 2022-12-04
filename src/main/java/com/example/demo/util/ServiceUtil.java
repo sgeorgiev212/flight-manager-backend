@@ -13,4 +13,10 @@ public class ServiceUtil {
 
     public static final String REGISTERED_TRAVEL_AGENCY_STATUS = "REGISTERED";
 
+    public static void validateReviewText(String text) {
+        if (text.trim().isEmpty()) {
+            throw new IllegalArgumentException("Review text must not be empty.");
+        }
+    }
+
 }

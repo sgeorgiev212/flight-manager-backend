@@ -2,6 +2,7 @@ package com.example.demo.model.entity;
 
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.util.PassengerUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Passenger {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String address;

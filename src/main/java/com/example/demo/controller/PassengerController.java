@@ -1,11 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.airline.AddAirlineReviewDto;
+import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.LoginRequestDto;
 import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
+import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
+import com.example.demo.model.entity.AirlineReview;
+import com.example.demo.model.entity.TravelAgencyReview;
 import com.example.demo.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +46,16 @@ public class PassengerController {
     @DeleteMapping("/{id}/bookings/{bookingId}")
     public String cancelABookingRequestForPassenger(@PathVariable int id, @PathVariable int bookingId) {
         return passengerService.cancelABookingRequestForPassenger(id, bookingId);
+    }
+
+    @PostMapping("/reviews/agency")
+    public TravelAgencyReview addReviewForTravelAgency(@RequestBody AddTravelAgencyReviewDto addTravelAgencyReviewDto) {
+          return passengerService.addReviewForTravelAgency(addTravelAgencyReviewDto);
+    }
+
+    @PostMapping("/reviews/airline")
+    public AirlineReview addReviewForAirline(@RequestBody AddAirlineReviewDto airlineReviewDto) {
+       return passengerService.addReviewForAirline(airlineReviewDto);
     }
 
 }

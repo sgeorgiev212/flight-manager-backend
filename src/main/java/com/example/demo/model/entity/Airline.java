@@ -36,6 +36,10 @@ public class Airline {
     @JsonManagedReference
     private List<Ticket> tickets;
 
+    @OneToMany(mappedBy = "airline")
+    @JsonManagedReference
+    private List<AirlineReview> reviews;
+
     public Airline(CreateAirlineRequestDto createAirlineRequestDto) {
         this.name = createAirlineRequestDto.getName();
         this.address = createAirlineRequestDto.getAddress();

@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.CreateTicketRequestDto;
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
+import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.*;
+import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.service.AirlineService;
 import com.example.demo.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,10 @@ public class AirlineController {
     @PostMapping("/tickets")
     public TicketDto createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
         return airlineService.createTicket(createTicketRequestDto);
+    }
+
+    @GetMapping("/{id}/reviews")
+    public List<AirlineReview> getAllReviewsForAirline(@PathVariable int id) {
+      return airlineService.getAllReviewsForAirline(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.model.dto;
+package com.example.demo.model.dto.ticket;
 
 import com.example.demo.model.entity.Ticket;
 import lombok.AllArgsConstructor;

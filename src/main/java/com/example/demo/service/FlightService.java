@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.*;
 import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.entity.*;
@@ -19,7 +19,7 @@ import static com.example.demo.util.ServiceUtil.ACTIVE_FLIGHT_STATUS;
 import static com.example.demo.util.ServiceUtil.CANCELED_FLIGHT_STATUS;
 
 @Service
-public class FlightService {
+public class  FlightService {
 
     @Autowired
     FlightRepository flightRepository;
@@ -147,9 +147,6 @@ public class FlightService {
         return passengers.stream()
                 .map(passenger -> new PassengerDto(passenger))
                 .collect(Collectors.toList());
-//        return flight.getTickets().stream()
-//                .map(ticket -> new PassengerDto(ticket.getPassenger()))
-//                .collect(Collectors.toList());
     }
 
     public Flight findFlightById(int flightId) {

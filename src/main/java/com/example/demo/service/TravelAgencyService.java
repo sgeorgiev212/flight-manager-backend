@@ -1,9 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
+import com.example.demo.model.entity.Passenger;
 import com.example.demo.model.entity.TravelAgency;
+import com.example.demo.model.entity.TravelAgencyReview;
 import com.example.demo.repository.TravelAgencyRepository;
+import com.example.demo.repository.TravelAgencyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +16,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.demo.util.ServiceUtil.REGISTERED_TRAVEL_AGENCY_STATUS;
+import static com.example.demo.util.ServiceUtil.validateReviewText;
 
 @Service
 public class TravelAgencyService {
 
     @Autowired
     TravelAgencyRepository travelAgencyRepository;
+
+    @Autowired
+    TravelAgencyReviewRepository travelAgencyReviewRepository;
 
     public TravelAgencyDto registerTravelAgency(RegisterTravelAgencyRequestDto travelAgencyRequestDto) {
         String agencyName = travelAgencyRequestDto.getName();
@@ -56,9 +64,30 @@ public class TravelAgencyService {
                 .collect(Collectors.toList());
     }
 
-    public TravelAgency findAgencyById(int agencyId) {
-        Optional<TravelAgency> travelAgency = travelAgencyRepository.findById(agencyId);
-        return (travelAgency.isPresent()) ? travelAgency.get() : null;
+    public TravelAgencyReview addReviewForTravelAgency(AddTravelAgencyReviewDto addTravelAgencyReviewDto, Passenger reviewer) {
+        TravelAgency travelAgency = findAgencyById(addTravelAgencyReviewDto.getAgencyId());
+        validateReviewText(addTravelAgencyReviewDto.getReview());
+
+        TravelAgencyReview review = new TravelAgencyReview();
+        review.setTravelAgency(travelAgency);
+        review.setReviewer(reviewer);
+        review.setReview(addTravelAgencyReviewDto.getReview());
+
+        return travelAgencyReviewRepository.save(review);
     }
 
+    public List<TravelAgencyReview> getAllReviewsForAgency(int agencyId) {
+        TravelAgency agency = findAgencyById(agencyId);
+        return agency.getReviews();
+    }
+
+    public TravelAgency findAgencyById(int agencyId) {
+        Optional<TravelAgency> travelAgency = travelAgencyRepository.findById(agencyId);
+
+        if (travelAgency.isEmpty()) {
+            throw new IllegalArgumentException("Travel agency with id: " + agencyId + " was not found!");
+        }
+
+        return travelAgency.get();
+    }
 }

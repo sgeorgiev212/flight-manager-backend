@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.model.dto.CreateTicketRequestDto;
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
+import com.example.demo.model.dto.ticket.TicketDto;
+import com.example.demo.model.entity.Passenger;
 import com.example.demo.model.entity.Ticket;
 import com.example.demo.repository.AirlineRepository;
+import com.example.demo.repository.PassengerRepository;
 import com.example.demo.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class TicketService {
 
     @Autowired
-    PassengerService passengerService;
+    PassengerRepository passengerRepository;
 
     @Autowired
     FlightService flightService;
@@ -27,11 +29,17 @@ public class TicketService {
     TicketRepository ticketRepository;
 
     public TicketDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
+        int passengerId = createTicketRequestDto.getPassengerId();
+        if (passengerRepository.findById(passengerId).isEmpty()) {
+            throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
+        }
+
+        Passenger passenger = passengerRepository.findById(createTicketRequestDto.getPassengerId()).get();
         Ticket ticket = new Ticket();
-        ticket.setPassenger(passengerService.findPassengerById(createTicketRequestDto.getPassengerId()));
+        ticket.setPassenger(passenger);
         ticket.setFlight(flightService.findFlightById(createTicketRequestDto.getFlightId()));
 
-        if (createTicketRequestDto.getAgencyId() != 0){
+        if (createTicketRequestDto.getAgencyId() != 0) {
             ticket.setTravelAgency(travelAgencyService.findAgencyById(createTicketRequestDto.getAgencyId()));
         }
 

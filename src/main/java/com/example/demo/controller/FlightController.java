@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.BookFlightRequestDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.PassengerDto;

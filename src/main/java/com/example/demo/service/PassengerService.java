@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.airline.AddAirlineReviewDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.LoginRequestDto;
 import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
+import com.example.demo.model.dto.ticket.TicketDto;
+import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
+import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.Passenger;
+import com.example.demo.model.entity.TravelAgencyReview;
 import com.example.demo.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +33,12 @@ public class PassengerService {
 
     @Autowired
     BookingRequestService bookingRequestService;
+
+    @Autowired
+    TravelAgencyService travelAgencyService;
+
+    @Autowired
+    AirlineService airlineService;
 
     public RegisterPassengerResponseDto registerPassenger(RegisterPassengerRequestDto registerPassengerDto) {
         validateRegisterPassengerDto(registerPassengerDto);
@@ -59,9 +69,6 @@ public class PassengerService {
 
     public List<BookingRequestDto> getAllBookingsForUser(int id) {
         Passenger passenger = findPassengerById(id);
-        if (passenger == null) {
-            throw new IllegalArgumentException("Passenger with id: " + id + " was not found!");
-        }
 
         return passenger.getBookingRequests().stream()
                 .map(bookingRequest -> new BookingRequestDto(bookingRequest))
@@ -70,9 +77,6 @@ public class PassengerService {
 
     public List<TicketDto> getAllTicketsForUser(int id) {
         Passenger passenger = findPassengerById(id);
-        if (passenger == null) {
-            throw new IllegalArgumentException("Passenger with id: " + id + " was not found!");
-        }
 
         return passenger.getTickets().stream()
                 .map(ticket -> new TicketDto(ticket))
@@ -80,17 +84,28 @@ public class PassengerService {
     }
 
     public String cancelABookingRequestForPassenger(int passengerId, int bookingId) {
-        Passenger passenger = findPassengerById(passengerId);
-        if (passenger == null) {
-            throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
-        }
-
+        findPassengerById(passengerId);
         return bookingRequestService.cancelABookingForPassenger(passengerId, bookingId);
+    }
+
+    public TravelAgencyReview addReviewForTravelAgency(AddTravelAgencyReviewDto addTravelAgencyReviewDto) {
+        Passenger passenger = findPassengerById(addTravelAgencyReviewDto.getReviewerId());
+        return travelAgencyService.addReviewForTravelAgency(addTravelAgencyReviewDto, passenger);
+    }
+
+    public AirlineReview addReviewForAirline(AddAirlineReviewDto addAirlineReviewDto) {
+        Passenger passenger = findPassengerById(addAirlineReviewDto.getReviewerId());
+        return airlineService.addReviewForAirline(addAirlineReviewDto, passenger);
     }
 
     public Passenger findPassengerById(int passengerId) {
         Optional<Passenger> passenger = passengerRepository.findById(passengerId);
-        return (passenger.isPresent()) ? passenger.get() : null;
+
+        if (passenger.isEmpty()) {
+            throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
+        }
+
+        return passenger.get();
     }
 
     private void validateRegisterPassengerDto(RegisterPassengerRequestDto registerPassengerRequestDto) {

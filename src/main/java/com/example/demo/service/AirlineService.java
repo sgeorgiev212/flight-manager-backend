@@ -1,17 +1,18 @@
 package com.example.demo.service;
 
-import com.example.demo.model.dto.CreateTicketRequestDto;
-import com.example.demo.model.dto.TicketDto;
+import com.example.demo.model.dto.airline.AddAirlineReviewDto;
 import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.flight.FLightDto;
+import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
+import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.entity.Airline;
+import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.Flight;
-import com.example.demo.repository.AirlineRepository;
-import com.example.demo.repository.BookingRequestRepository;
-import com.example.demo.repository.FlightRepository;
+import com.example.demo.model.entity.Passenger;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.demo.util.ServiceUtil.CREATED_STATUS;
+import static com.example.demo.util.ServiceUtil.validateReviewText;
 
 @Service
 public class AirlineService {
@@ -37,13 +39,16 @@ public class AirlineService {
     BookingRequestRepository bookingRequestRepository;
 
     @Autowired
-    PassengerService passengerService;
+    PassengerRepository passengerRepository;
 
     @Autowired
     TravelAgencyService travelAgencyService;
 
     @Autowired
     TicketService ticketService;
+
+    @Autowired
+    AirlineReviewRepository airlineReviewRepository;
 
     public AirlineDto registerAirline(CreateAirlineRequestDto createAirlineRequestDto) {
         validateAirlineRegistration(createAirlineRequestDto);
@@ -109,9 +114,21 @@ public class AirlineService {
                 .collect(Collectors.toList());
     }
 
-    public Airline findAirlineById(int airlineId) {
-        Optional<Airline> airline = airlineRepository.findById(airlineId);
-        return (airline.isPresent()) ? airline.get() : null;
+    public AirlineReview addReviewForAirline(AddAirlineReviewDto addAirlineReviewDto, Passenger reviewer) {
+        Airline airline = findAirlineById(addAirlineReviewDto.getAirlineId());
+        validateReviewText(addAirlineReviewDto.getReview());
+
+        AirlineReview review = new AirlineReview();
+        review.setAirline(airline);
+        review.setReviewer(reviewer);
+        review.setReview(addAirlineReviewDto.getReview());
+
+        return airlineReviewRepository.save(review);
+    }
+
+    public List<AirlineReview> getAllReviewsForAirline(int airlineId) {
+        Airline airline = findAirlineById(airlineId);
+        return airline.getReviews();
     }
 
     public TicketDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
@@ -119,13 +136,24 @@ public class AirlineService {
         return ticketService.createTicket(createTicketRequestDto);
     }
 
+    public Airline findAirlineById(int airlineId) {
+        Optional<Airline> airline = airlineRepository.findById(airlineId);
+
+        if (airline.isEmpty()) {
+            throw new IllegalArgumentException("Airline with id: " + airlineId + " was not found!");
+        }
+
+        return airline.get();
+    }
+
+
     private void validateTicketRequestDto(CreateTicketRequestDto createTicketRequestDto) {
         int passengerId = createTicketRequestDto.getPassengerId();
         int flightId = createTicketRequestDto.getFlightId();
         int agencyId = createTicketRequestDto.getAgencyId();
         int airlineId = createTicketRequestDto.getAirlineId();
 
-        if (passengerService.findPassengerById(passengerId) == null) {
+        if (passengerRepository.findById(passengerId).isEmpty()) {
             throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
         }
 
