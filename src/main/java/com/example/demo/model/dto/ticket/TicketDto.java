@@ -30,7 +30,7 @@ public class TicketDto {
         if (ticket.getTravelAgency() != null) {
             this.agencyId = ticket.getTravelAgency().getId();
         }
-        
+
         this.airlineId = ticket.getAirline().getId();
     }
 }

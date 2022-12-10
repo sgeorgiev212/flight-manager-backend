@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.dto.flight.FLightDto;
 import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.BookFlightRequestDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
@@ -30,5 +31,10 @@ public class FlightController {
     @GetMapping("/{id}/passengers")
     public List<PassengerDto> getAllPassengersForFlight(@PathVariable int id) {
         return flightService.getAllPassengersForFlight(id);
+    }
+
+    @GetMapping()
+    public List<FLightDto> getAllFLights() {
+        return flightService.getAllFLights();
     }
 }

@@ -154,6 +154,14 @@ public class  FlightService {
         return (flight.isPresent()) ? flight.get() : null;
     }
 
+    public List<FLightDto> getAllFLights() {
+        List<Flight> allFlights = flightRepository.findAll();
+
+        return allFlights.stream()
+                .map(flight -> new FLightDto(flight))
+                .collect(Collectors.toList());
+    }
+    
     private void validateBookFLightRequestDto(BookFlightRequestDto bookFlightRequestDto) {
         int passengerId = bookFlightRequestDto.getPassengerId();
 
