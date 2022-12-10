@@ -75,7 +75,7 @@ public class AirlineService {
         Timestamp takeOffEndDateForDb = getEndDateAndTimeForCurrentDay(takeOffStartDateForDb);
         List<Flight> flights = flightRepository.findAllByAirlineIdAndTakeoffTime(airlineId, takeOffStartDateForDb, takeOffEndDateForDb);
         if (flights.isEmpty()) {
-            throw new IllegalArgumentException("No flights were found for airline with id: " + airlineId + "" +
+            throw new IllegalArgumentException("No flights were found for airline with id: " + airlineId +
                     " and take off date " + takeoffDate);
         }
         return flights.stream()
@@ -161,8 +161,10 @@ public class AirlineService {
             throw new IllegalArgumentException("Flight with id: " + flightId + " was not found!");
         }
 
-        if (travelAgencyService.findAgencyById(agencyId) == null) {
-            throw new IllegalArgumentException("Travel agency with id: " + agencyId + " was not found!");
+        if (agencyId != 0) {
+            if (travelAgencyService.findAgencyById(agencyId) == null) {
+                throw new IllegalArgumentException("Travel agency with id: " + agencyId + " was not found!");
+            }
         }
 
         if (airlineRepository.findById(airlineId).get() == null) {

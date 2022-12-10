@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
-import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.*;
+import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
+import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.service.AirlineService;
 import com.example.demo.service.FlightService;
+import com.example.demo.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,11 @@ public class AirlineController {
     @Autowired
     FlightService flightService;
 
+    @Autowired
+    TicketService ticketService;
+
     @GetMapping("/{airlineId}/flights")
-    public List<FLightDto> getAllAvailableFlights(@PathVariable int airlineId) {
+    public List<FLightDto> getAllAvailableFlightsForAirline(@PathVariable int airlineId) {
         return airlineService.getAllFlightsForAirline(airlineId);
     }
 
@@ -65,6 +69,13 @@ public class AirlineController {
 
     @GetMapping("/{id}/reviews")
     public List<AirlineReview> getAllReviewsForAirline(@PathVariable int id) {
-      return airlineService.getAllReviewsForAirline(id);
+        return airlineService.getAllReviewsForAirline(id);
     }
+
+    @DeleteMapping("/{id}/tickets/{ticketId}")
+    public String deleteTicket(@PathVariable int id, @PathVariable int ticketId) {
+        airlineService.findAirlineById(id);
+        return ticketService.deleteTicket(ticketId);
+    }
+
 }

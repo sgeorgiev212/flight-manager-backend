@@ -49,4 +49,15 @@ public class TicketService {
         return new TicketDto(ticket);
     }
 
+    public String deleteTicket(int ticketId) {
+        if (ticketRepository.findById(ticketId).isEmpty()) {
+            throw new IllegalArgumentException("Ticket with id: " + ticketId + " was not found!");
+        }
+
+        Ticket ticket = ticketRepository.findById(ticketId).get();
+        ticketRepository.delete(ticket);
+
+        return "Ticket with id: " + ticketId + " was deleted successfully!";
+    }
+
 }

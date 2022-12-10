@@ -26,7 +26,11 @@ public class TicketDto {
         this.id = ticket.getId();
         this.passengerId = ticket.getPassenger().getId();
         this.flightId = ticket.getFlight().getId();
-        this.agencyId = ticket.getTravelAgency().getId();
+
+        if (ticket.getTravelAgency() != null) {
+            this.agencyId = ticket.getTravelAgency().getId();
+        }
+        
         this.airlineId = ticket.getAirline().getId();
     }
 }
