@@ -26,7 +26,15 @@ public class BookingRequestService {
 
     public BookingRequest findBookingRequestById(int bookingRequestId) {
         Optional<BookingRequest> bookingRequest = bookingRequestRepository.findById(bookingRequestId);
-        return (bookingRequest.isEmpty()) ? null : bookingRequest.get();
+        if (bookingRequest.isEmpty()) {
+            throw new IllegalArgumentException("Booking request with id: " + bookingRequestId + " was not found!");
+        }
+        return bookingRequest.get();
+    }
+
+    public String deleteBookingRequest(BookingRequest bookingRequest) {
+        bookingRequestRepository.delete(bookingRequest);
+        return "Booking request with id: " + bookingRequest.getId() + " was deleted successfully!";
     }
 
 }

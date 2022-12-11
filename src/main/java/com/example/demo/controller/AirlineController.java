@@ -6,7 +6,9 @@ import com.example.demo.model.dto.flight.*;
 import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
 import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.entity.AirlineReview;
+import com.example.demo.model.entity.BookingRequest;
 import com.example.demo.service.AirlineService;
+import com.example.demo.service.BookingRequestService;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class AirlineController {
 
     @Autowired
     TicketService ticketService;
+
+    @Autowired
+    BookingRequestService bookingRequestService;
 
     @GetMapping("/{airlineId}/flights")
     public List<FLightDto> getAllAvailableFlightsForAirline(@PathVariable int airlineId) {
@@ -76,6 +81,15 @@ public class AirlineController {
     public String deleteTicket(@PathVariable int id, @PathVariable int ticketId) {
         airlineService.findAirlineById(id);
         return ticketService.deleteTicket(ticketId);
+    }
+
+    @PostMapping("/{id}/bookings/{requestId}")
+    public String createTicketFromBooking(@PathVariable int requestId) {
+        BookingRequest bookingRequest = bookingRequestService.findBookingRequestById(requestId);
+        TicketDto ticket = ticketService.createTicket(new CreateTicketRequestDto(bookingRequest));
+        bookingRequestService.deleteBookingRequest(bookingRequest);
+        return "Ticket with id : " + ticket.getId() + " was created from booking request " +
+                "with id: " + bookingRequest.getId();
     }
 
 }
