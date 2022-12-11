@@ -109,7 +109,8 @@ public class AirlineService {
             throw new IllegalArgumentException("Airline with id: " + airlineId + " was not found!");
         }
 
-        return bookingRequestRepository.findByAirlineId(airlineId).stream()
+        return bookingRequestRepository.findByAirlineId(airlineId)
+                .stream()
                 .map(bookingRequest -> new BookingRequestDto(bookingRequest))
                 .collect(Collectors.toList());
     }

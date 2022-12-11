@@ -16,7 +16,7 @@ public class BookingRequestService {
     public String cancelABookingForPassenger(int passengerId, int bookingId) {
         BookingRequest bookingRequest = findBookingRequestById(bookingId);
         if (bookingRequest == null) {
-            throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
+            throw new IllegalArgumentException("Booking request with id: " + bookingId + " was not found!");
         }
 
         bookingRequestRepository.delete(bookingRequest);

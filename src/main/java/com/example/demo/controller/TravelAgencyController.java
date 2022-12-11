@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
 import com.example.demo.model.entity.TravelAgencyReview;
@@ -29,6 +30,16 @@ public class TravelAgencyController {
     @GetMapping("/{id}/reviews")
     public List<TravelAgencyReview> getAllReviewsForAgency(@PathVariable int id) {
         return travelAgencyService.getAllReviewsForAgency(id);
+    }
+
+    @GetMapping("/{id}/bookings")
+    public List<BookingRequestDto> getAllBookingRequestsForTravelAgency(@PathVariable int id) {
+        return travelAgencyService.getAllBookingRequestsForTravelAgency(id);
+    }
+
+    @DeleteMapping("/{id}/bookings/{bookingId}")
+    public String cancelBooking(@PathVariable int id, @PathVariable int bookingId) {
+        return travelAgencyService.cancelBooking(id, bookingId);
     }
 
 }

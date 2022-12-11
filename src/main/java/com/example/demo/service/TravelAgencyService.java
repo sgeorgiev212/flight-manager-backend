@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
+import com.example.demo.model.entity.BookingRequest;
 import com.example.demo.model.entity.Passenger;
 import com.example.demo.model.entity.TravelAgency;
 import com.example.demo.model.entity.TravelAgencyReview;
+import com.example.demo.repository.BookingRequestRepository;
 import com.example.demo.repository.TravelAgencyRepository;
 import com.example.demo.repository.TravelAgencyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,12 @@ public class TravelAgencyService {
 
     @Autowired
     TravelAgencyReviewRepository travelAgencyReviewRepository;
+
+    @Autowired
+    BookingRequestRepository bookingRequestRepository;
+
+    @Autowired
+    BookingRequestService bookingRequestService;
 
     public TravelAgencyDto registerTravelAgency(RegisterTravelAgencyRequestDto travelAgencyRequestDto) {
         String agencyName = travelAgencyRequestDto.getName();
@@ -79,6 +88,21 @@ public class TravelAgencyService {
     public List<TravelAgencyReview> getAllReviewsForAgency(int agencyId) {
         TravelAgency agency = findAgencyById(agencyId);
         return agency.getReviews();
+    }
+
+    public List<BookingRequestDto> getAllBookingRequestsForTravelAgency(int agencyId) {
+        findAgencyById(agencyId);
+
+        return bookingRequestRepository.findAllByAgencyId(agencyId)
+                .stream()
+                .map(bookingRequest -> new BookingRequestDto(bookingRequest))
+                .collect(Collectors.toList());
+    }
+
+    public String cancelBooking(int agencyId, int bookingId) {
+        findAgencyById(agencyId);
+        BookingRequest bookingRequest = bookingRequestService.findBookingRequestById(bookingId);
+        return bookingRequestService.deleteBookingRequest(bookingRequest);
     }
 
     public TravelAgency findAgencyById(int agencyId) {
