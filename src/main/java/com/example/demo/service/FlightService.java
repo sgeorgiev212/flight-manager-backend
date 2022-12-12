@@ -19,7 +19,7 @@ import static com.example.demo.util.ServiceUtil.ACTIVE_FLIGHT_STATUS;
 import static com.example.demo.util.ServiceUtil.CANCELED_FLIGHT_STATUS;
 
 @Service
-public class  FlightService {
+public class FlightService {
 
     @Autowired
     FlightRepository flightRepository;
@@ -161,7 +161,7 @@ public class  FlightService {
                 .map(flight -> new FLightDto(flight))
                 .collect(Collectors.toList());
     }
-    
+
     private void validateBookFLightRequestDto(BookFlightRequestDto bookFlightRequestDto) {
         int passengerId = bookFlightRequestDto.getPassengerId();
 
@@ -183,6 +183,15 @@ public class  FlightService {
         if (flightRepository.findById(flightId).isEmpty()) {
             throw new IllegalArgumentException("Fight with id: " + flightId + " was not found!");
         }
+
+        Airline airline = airlineRepository.findById(airlineId).get();
+        Flight flight = flightRepository.findById(flightId).get();
+
+        if (!flight.getAirline().getName().equals(airline.getName())) {
+            throw new IllegalArgumentException("Fight with id: " + flightId + " is not present " +
+                    "for airline with id: " + airlineId);
+        }
+
     }
 
     private Flight validateAndCreateFlightFromRequest(CreateFlightRequestDto createFlightRequestDto) {
