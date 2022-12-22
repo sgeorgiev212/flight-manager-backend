@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.dto.flight.FLightDto;
+import com.example.demo.model.dto.flight.FlightInfoDto;
 import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.BookFlightRequestDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/flights")
+@CrossOrigin(origins="http://localhost:8080")
 public class FlightController {
 
     @Autowired
@@ -34,7 +36,7 @@ public class FlightController {
     }
 
     @GetMapping()
-    public List<FLightDto> getAllFLights() {
+    public List<FlightInfoDto> getAllFLights() {
         return flightService.getAllFLights();
     }
 }

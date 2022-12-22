@@ -154,11 +154,11 @@ public class FlightService {
         return (flight.isPresent()) ? flight.get() : null;
     }
 
-    public List<FLightDto> getAllFLights() {
+    public List<FlightInfoDto> getAllFLights() {
         List<Flight> allFlights = flightRepository.findAll();
 
         return allFlights.stream()
-                .map(flight -> new FLightDto(flight))
+                .map(flight -> new FlightInfoDto(flight))
                 .collect(Collectors.toList());
     }
 
