@@ -17,10 +17,10 @@ public class CreateFlightRequestDto {
 
     private Timestamp landTime;
 
-    private int takeoffAirportId;
+    private String takeoffAirport;
 
-    private int landAirportId;
+    private String landAirport;
 
-    private int airlineId;
+    private String airline;
 
 }

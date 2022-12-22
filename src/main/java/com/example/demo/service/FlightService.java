@@ -195,9 +195,9 @@ public class FlightService {
     }
 
     private Flight validateAndCreateFlightFromRequest(CreateFlightRequestDto createFlightRequestDto) {
-        int takeOffAirportId = createFlightRequestDto.getTakeoffAirportId();
-        int landAirportId = createFlightRequestDto.getLandAirportId();
-        int airlineId = createFlightRequestDto.getAirlineId();
+        int takeOffAirportId = getAirportByName(createFlightRequestDto.getTakeoffAirport()).getId();
+        int landAirportId = getAirportByName(createFlightRequestDto.getLandAirport()).getId();
+        int airlineId = getAirlineByName(createFlightRequestDto.getAirline()).getId();
 
         Airport takeoffAirport = validateAirportId(takeOffAirportId);
         Airport landAirport = validateAirportId(landAirportId);
@@ -271,9 +271,9 @@ public class FlightService {
     private void checkIfFlightIsRegistered(CreateFlightRequestDto createFlightRequestDto) {
         Timestamp takeoffTime = createFlightRequestDto.getTakeoffTime();
         Timestamp landTime = createFlightRequestDto.getLandTime();
-        int takeOffAirportId = createFlightRequestDto.getTakeoffAirportId();
-        int landAirportId = createFlightRequestDto.getLandAirportId();
-        int airlineId = createFlightRequestDto.getAirlineId();
+        int takeOffAirportId = getAirportByName(createFlightRequestDto.getTakeoffAirport()).getId();
+        int landAirportId = getAirportByName(createFlightRequestDto.getLandAirport()).getId();
+        int airlineId = getAirlineByName(createFlightRequestDto.getAirline()).getId();
 
         Flight flight = flightRepository.checkIfFLightIsAlreadyRegistered(takeoffTime, landTime, takeOffAirportId, landAirportId, airlineId);
         if (flight != null) {
@@ -291,5 +291,23 @@ public class FlightService {
         Timestamp takeoffTime = flight.getTakeoffTime();
         validateTakeoffAndLandingTime(takeoffTime, landTime);
         flight.setLandTime(landTime);
+    }
+
+    private Airport getAirportByName(String name) {
+        Airport airport = airportRepository.findByName(name);
+        if (airport == null) {
+            throw new IllegalArgumentException("Airport with name: " + name + " was not found!");
+        }
+
+        return airport;
+    }
+
+    private Airline getAirlineByName(String name) {
+        Airline airline = airlineRepository.findByName(name);
+        if (airline == null) {
+            throw new IllegalArgumentException("Airline with name: " + name + " was not found!");
+        }
+
+        return airline;
     }
 }
