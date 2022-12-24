@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.dto.flight.BookingRequestDto;
+import com.example.demo.model.dto.travelAgency.EditTravelAgencyDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
 import com.example.demo.model.entity.TravelAgencyReview;
@@ -21,6 +22,11 @@ public class TravelAgencyController {
     @PostMapping
     public TravelAgencyDto registerTravelAgency(@RequestBody RegisterTravelAgencyRequestDto travelAgencyRequestDto) {
         return travelAgencyService.registerTravelAgency(travelAgencyRequestDto);
+    }
+
+    @PutMapping
+    public TravelAgencyDto editTravelAgency(@RequestBody EditTravelAgencyDto editTravelAgencyDto) {
+        return travelAgencyService.editTravelAgency(editTravelAgencyDto);
     }
 
     @GetMapping

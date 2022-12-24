@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
+import com.example.demo.model.dto.travelAgency.EditTravelAgencyDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
 import com.example.demo.model.entity.BookingRequest;
@@ -13,6 +14,7 @@ import com.example.demo.repository.TravelAgencyRepository;
 import com.example.demo.repository.TravelAgencyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +61,15 @@ public class TravelAgencyService {
         travelAgency = travelAgencyRepository.save(travelAgency);
 
         return new TravelAgencyDto(travelAgency);
+    }
+
+    public TravelAgencyDto editTravelAgency(EditTravelAgencyDto editTravelAgencyRequestDto) {
+        verifyEditAgencyDetails(editTravelAgencyRequestDto);
+        TravelAgency agency = findAgencyById(editTravelAgencyRequestDto.getId());
+        agency.setName(editTravelAgencyRequestDto.getName());
+        agency.setAddress(editTravelAgencyRequestDto.getAddress());
+        agency = travelAgencyRepository.save(agency);
+        return new TravelAgencyDto(agency);
     }
 
     public List<TravelAgencyDto> getAllRegisteredAgencies() throws Exception {
@@ -113,5 +124,15 @@ public class TravelAgencyService {
         }
 
         return travelAgency.get();
+    }
+
+    private void verifyEditAgencyDetails(EditTravelAgencyDto editTravelAgencyDto) {
+        if (editTravelAgencyDto.getAddress().length() < 5) {
+            throw new IllegalArgumentException("Travel agency address must contain at least 5 characters!");
+        }
+
+        if (editTravelAgencyDto.getName().length() < 2) {
+            throw new IllegalArgumentException("Travel agency name must contain at least 2 characters!");
+        }
     }
 }
