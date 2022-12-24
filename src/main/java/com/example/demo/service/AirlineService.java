@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.dto.airline.AddAirlineReviewDto;
-import com.example.demo.model.dto.airline.AirlineDto;
-import com.example.demo.model.dto.airline.CreateAirlineRequestDto;
-import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
+import com.example.demo.model.dto.airline.*;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.flight.FLightDto;
 import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
@@ -15,6 +12,7 @@ import com.example.demo.model.entity.Passenger;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -91,6 +89,16 @@ public class AirlineService {
         calendar.add(Calendar.SECOND, 59);
         Timestamp endDateAndTimeForCurrentDay = new Timestamp(calendar.getTime().getTime());
         return endDateAndTimeForCurrentDay;
+    }
+
+    public AirlineDto editAirline(EditAirlineDto editAirlineDto) {
+        verifyEditAirlineDetails(editAirlineDto);
+        Airline airline = findAirlineById(editAirlineDto.getId());
+        airline.setName((editAirlineDto.getName()));
+        airline.setAddress(editAirlineDto.getAddress());
+        airline = airlineRepository.save(airline);
+
+        return new AirlineDto(airline);
     }
 
     public List<AirlineDto> getAllAirlines() {
@@ -187,6 +195,16 @@ public class AirlineService {
 
         if (airlineRepository.findByName(airlineName) != null) {
             throw new IllegalArgumentException("Airline with name: " + airlineName + " already exists!");
+        }
+    }
+
+    private void verifyEditAirlineDetails(EditAirlineDto editAirlineDto) {
+        if (editAirlineDto.getAddress().length() < 5) {
+            throw new IllegalArgumentException("Airline address must contain at least 5 characters!");
+        }
+
+        if (editAirlineDto.getName().length() < 2) {
+            throw new IllegalArgumentException("Airline name must contain at least 2 characters!");
         }
     }
 }
