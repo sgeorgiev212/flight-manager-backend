@@ -19,8 +19,10 @@ public class EditFlightDto {
 
     private Timestamp landTime;
 
-    private int takeoffAirportId;
+    private String takeoffAirport;
 
-    private int landAirportId;
+    private String landAirport;
+
+    private String status;
 
 }

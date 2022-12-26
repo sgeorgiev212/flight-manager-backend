@@ -67,22 +67,37 @@ public class FlightService {
             validateAndSetNewLandTime(landTime, flight);
         }
 
-        int takeoffAirportId = editFlightDto.getTakeoffAirportId();
-        int landAirportId = editFlightDto.getLandAirportId();
-        if (takeoffAirportId == landAirportId) {
-            throw new IllegalArgumentException("Takeoff airport id must not be equal to land airport id!");
+        if (editFlightDto.getTakeoffAirport() != null || editFlightDto.getLandAirport() != null)
+        {
+            int takeoffAirportId = 0;
+            int landAirportId = 0;
+
+            if (editFlightDto.getTakeoffAirport() != null) {
+                takeoffAirportId = getAirportByName(editFlightDto.getTakeoffAirport()).getId();
+            }
+
+            if (editFlightDto.getLandAirport() != null) {
+                landAirportId = getAirportByName(editFlightDto.getLandAirport()).getId();
+            }
+
+            if (takeoffAirportId == landAirportId) {
+                throw new IllegalArgumentException("Takeoff airport id must not be equal to land airport id!");
+            }
+
+            if (takeoffAirportId != 0) {
+                Airport takeOffAirport = validateAirportId(takeoffAirportId);
+                flight.setTakeoffAirport(takeOffAirport);
+
+            }
+
+            if (landAirportId != 0) {
+                Airport landAirport = validateAirportId(landAirportId);
+                flight.setLandAirport(landAirport);
+            }
         }
 
-        if (takeoffAirportId != 0) {
-            Airport takeOffAirport = validateAirportId(takeoffAirportId);
-            flight.setTakeoffAirport(takeOffAirport);
+        flight.setStatus(editFlightDto.getStatus());
 
-        }
-
-        if (landAirportId != 0) {
-            Airport landAirport = validateAirportId(landAirportId);
-            flight.setLandAirport(landAirport);
-        }
         flight = flightRepository.save(flight);
         return new FLightDto(flight);
     }
