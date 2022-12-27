@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.dto.airline.AddAirlineReviewDto;
+import com.example.demo.model.dto.ticket.PassengerTicketDto;
 import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.LoginRequestDto;
@@ -40,7 +41,7 @@ public class PassengerController {
     }
 
     @GetMapping("/{id}/tickets")
-    public List<TicketDto> getAllTicketsForUser(@PathVariable int id) {
+    public List<PassengerTicketDto> getAllTicketsForUser(@PathVariable int id) {
         return passengerService.getAllTicketsForUser(id);
     }
 

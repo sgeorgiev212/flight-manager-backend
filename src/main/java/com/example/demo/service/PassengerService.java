@@ -6,6 +6,7 @@ import com.example.demo.model.dto.passenger.LoginRequestDto;
 import com.example.demo.model.dto.passenger.PassengerDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
 import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
+import com.example.demo.model.dto.ticket.PassengerTicketDto;
 import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.entity.AirlineReview;
@@ -75,11 +76,11 @@ public class PassengerService {
                 .collect(Collectors.toList());
     }
 
-    public List<TicketDto> getAllTicketsForUser(int id) {
+    public List<PassengerTicketDto> getAllTicketsForUser(int id) {
         Passenger passenger = findPassengerById(id);
 
         return passenger.getTickets().stream()
-                .map(ticket -> new TicketDto(ticket))
+                .map(ticket -> new PassengerTicketDto(ticket))
                 .collect(Collectors.toList());
     }
 
