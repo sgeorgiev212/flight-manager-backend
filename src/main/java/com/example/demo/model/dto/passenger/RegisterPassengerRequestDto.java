@@ -19,6 +19,6 @@ public class RegisterPassengerRequestDto {
 
     private String password;
 
-    private String address;
+    private String confirmPassword;
 
 }

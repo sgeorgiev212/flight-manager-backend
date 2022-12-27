@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/passenger")
+@CrossOrigin(origins="http://localhost:8080")
 public class PassengerController {
 
     @Autowired
@@ -56,6 +57,11 @@ public class PassengerController {
     @PostMapping("/reviews/airline")
     public AirlineReview addReviewForAirline(@RequestBody AddAirlineReviewDto airlineReviewDto) {
        return passengerService.addReviewForAirline(airlineReviewDto);
+    }
+
+    @GetMapping("/{id}")
+    public PassengerDto findPassengerById(@PathVariable int id) {
+        return new PassengerDto(passengerService.findPassengerById(id));
     }
 
 }

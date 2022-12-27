@@ -50,7 +50,7 @@ public class Passenger {
         this.lastName = registerPassengerDto.getLastName();
         this.email = registerPassengerDto.getEmail();
         this.password = registerPassengerDto.getPassword();
-        this.address = registerPassengerDto.getAddress();
+        this.address = "";
         this.role = PassengerUtil.DEFAULT_PASSENGER_ROLE;
     }
 }

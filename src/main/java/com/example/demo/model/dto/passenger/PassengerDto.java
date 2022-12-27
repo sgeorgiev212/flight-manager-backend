@@ -16,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PassengerDto {
 
+    int id;
+
     private String firstName;
 
     private String lastName;
@@ -31,6 +33,7 @@ public class PassengerDto {
     private List<Ticket> tickets;
 
     public PassengerDto(Passenger passenger) {
+        this.id = passenger.getId();
         this.firstName = passenger.getFirstName();
         this.lastName = passenger.getLastName();
         this.email = passenger.getEmail();

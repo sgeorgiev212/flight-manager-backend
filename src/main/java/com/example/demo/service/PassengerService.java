@@ -118,6 +118,12 @@ public class PassengerService {
         }
 
         String password = registerPassengerRequestDto.getPassword();
+        String confirmPassword = registerPassengerRequestDto.getConfirmPassword();
+
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
+
         if (password.length() < 8 || password.length() > 20) {
             throw new IllegalArgumentException("Password must be between 8 and 20 characters long!");
         }
