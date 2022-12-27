@@ -16,4 +16,6 @@ public interface AirlineRepository extends JpaRepository<Airline,Integer> {
 
     Airline findByName(String name);
 
+    Airline findByManagerId(int managerId);
+
 }

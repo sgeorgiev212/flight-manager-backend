@@ -40,6 +40,10 @@ public class Airline {
     @JsonManagedReference
     private List<AirlineReview> reviews;
 
+    @OneToOne
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    private Passenger manager;
+
     public Airline(CreateAirlineRequestDto createAirlineRequestDto) {
         this.name = createAirlineRequestDto.getName();
         this.address = createAirlineRequestDto.getAddress();

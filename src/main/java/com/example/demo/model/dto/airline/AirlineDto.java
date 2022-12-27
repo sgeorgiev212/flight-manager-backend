@@ -20,10 +20,15 @@ public class AirlineDto {
 
     private String status;
 
+    private int managerId;
+
     public AirlineDto(Airline airline) {
         this.id = airline.getId();
         this.name = airline.getName();
         this.address = airline.getAddress();
         this.status = airline.getStatus();
+        if (airline.getManager() != null) {
+            this.managerId = airline.getManager().getId();
+        }
     }
 }

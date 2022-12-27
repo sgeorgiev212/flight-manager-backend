@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/airline")
-@CrossOrigin(origins="http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8080")
 public class AirlineController {
 
     @Autowired
@@ -100,4 +100,13 @@ public class AirlineController {
                 "with id: " + bookingRequest.getId();
     }
 
+    @PutMapping("/{id}/manager/{managerId}")
+    public AirlineDto assignAirlineManager(@PathVariable int id, @PathVariable int managerId) {
+         return airlineService.assignAirlineManager(id, managerId);
+    }
+
+    @GetMapping("/manager/{id}")
+    public AirlineDto findAirlineByManagerId(@PathVariable int id) {
+         return airlineService.findAirlineByManagerId(id);
+    }
 }

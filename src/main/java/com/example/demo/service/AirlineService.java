@@ -12,6 +12,7 @@ import com.example.demo.model.entity.Passenger;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.demo.util.PassengerUtil.AIRLINE_MANAGER_ROLE;
 import static com.example.demo.util.ServiceUtil.CREATED_STATUS;
 import static com.example.demo.util.ServiceUtil.validateReviewText;
 
@@ -155,6 +157,28 @@ public class AirlineService {
         return airline.get();
     }
 
+    public AirlineDto assignAirlineManager(int id, int managerId) {
+        Airline airline = findAirlineById(id);
+        Optional<Passenger> managerById = passengerRepository.findById(managerId);
+        if (managerById.isEmpty()) {
+            throw new IllegalArgumentException("User with id: " + managerId + " was not found!");
+        }
+
+        Passenger manager = managerById.get();
+        manager.setRole(AIRLINE_MANAGER_ROLE);
+        airline.setManager(manager);
+        airline = airlineRepository.save(airline);
+        return new AirlineDto(airline);
+    }
+
+    public AirlineDto findAirlineByManagerId(int id) {
+        Airline airline = airlineRepository.findByManagerId(id);
+        if (airline == null) {
+            throw new IllegalArgumentException("Airline with manager id " + id + " was not found!");
+        }
+
+        return new AirlineDto(airline);
+    }
 
     private void validateTicketRequestDto(CreateTicketRequestDto createTicketRequestDto) {
         int passengerId = createTicketRequestDto.getPassengerId();
