@@ -16,9 +16,9 @@ public class BookingRequestDto {
 
     private int passengerId;
 
-    private int agencyId;
+    private String agency;
 
-    private int airlineId;
+    private String airline;
 
     private int flightId;
 
@@ -27,10 +27,10 @@ public class BookingRequestDto {
         this.passengerId = bookingRequest.getPassengerHasBooking().getId();
 
         if (bookingRequest.getTravelAgency() != null) {
-            this.agencyId = bookingRequest.getTravelAgency().getId();
+            this.agency = bookingRequest.getTravelAgency().getName();
         }
 
-        this.airlineId = bookingRequest.getAirline().getId();
+        this.airline = bookingRequest.getAirline().getName();
         this.flightId = bookingRequest.getFlight().getId();
     }
 

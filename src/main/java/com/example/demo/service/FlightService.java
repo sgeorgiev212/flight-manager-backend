@@ -127,7 +127,7 @@ public class FlightService {
             bookingRequest.setTravelAgency(travelAgency);
         }
 
-        Airline airline = airlineRepository.findById(bookFlightRequestDto.getAirlineId()).get();
+        Airline airline = airlineRepository.findByName(bookFlightRequestDto.getAirline());
         bookingRequest.setAirline(airline);
 
         Flight flight = flightRepository.findById(bookFlightRequestDto.getFlightId()).get();
@@ -189,9 +189,9 @@ public class FlightService {
             throw new IllegalArgumentException("Travel agency with id: " + agencyId + " was not found!");
         }
 
-        int airlineId = bookFlightRequestDto.getAirlineId();
-        if (airlineRepository.findById(airlineId).isEmpty()) {
-            throw new IllegalArgumentException("Airline with id: " + airlineId + " was not found!");
+        String airlineName = bookFlightRequestDto.getAirline();
+        if (airlineRepository.findByName(airlineName) == null) {
+            throw new IllegalArgumentException("Airline with name: " + airlineName + " was not found!");
         }
 
         int flightId = bookFlightRequestDto.getFlightId();
@@ -199,12 +199,12 @@ public class FlightService {
             throw new IllegalArgumentException("Fight with id: " + flightId + " was not found!");
         }
 
-        Airline airline = airlineRepository.findById(airlineId).get();
+        Airline airline = airlineRepository.findByName(airlineName);
         Flight flight = flightRepository.findById(flightId).get();
 
         if (!flight.getAirline().getName().equals(airline.getName())) {
             throw new IllegalArgumentException("Fight with id: " + flightId + " is not present " +
-                    "for airline with id: " + airlineId);
+                    "for airline with name: " + airlineName);
         }
 
     }
