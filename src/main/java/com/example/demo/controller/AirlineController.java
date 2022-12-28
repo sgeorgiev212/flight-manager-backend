@@ -34,8 +34,8 @@ public class AirlineController {
     @Autowired
     BookingRequestService bookingRequestService;
 
-    @GetMapping("/{airlineId}/flights")
-    public List<FLightDto> getAllAvailableFlightsForAirline(@PathVariable int airlineId) {
+    @GetMapping("/{airlineId}/flights") 
+    public List<AirlineFlightDto> getAllAvailableFlightsForAirline(@PathVariable int airlineId) {
         return airlineService.getAllFlightsForAirline(airlineId);
     }
 

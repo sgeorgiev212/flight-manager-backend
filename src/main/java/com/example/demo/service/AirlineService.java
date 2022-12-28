@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.dto.airline.*;
+import com.example.demo.model.dto.flight.AirlineFlightDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.flight.FLightDto;
 import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
@@ -58,11 +59,11 @@ public class AirlineService {
         return new AirlineDto(airline);
     }
 
-    public List<FLightDto> getAllFlightsForAirline(int airlineId) {
-        List<FLightDto> result;
+    public List<AirlineFlightDto> getAllFlightsForAirline(int airlineId) {
+        List<AirlineFlightDto> result;
         List<Flight> flights = flightRepository.findAllByAirlineId(airlineId);
         result = flights.stream()
-                .map(flight -> new FLightDto(flight))
+                .map(flight -> new AirlineFlightDto(flight))
                 .collect(Collectors.toList());
 
         return result;
