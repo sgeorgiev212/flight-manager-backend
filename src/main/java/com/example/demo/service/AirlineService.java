@@ -24,8 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.demo.util.PassengerUtil.AIRLINE_MANAGER_ROLE;
-import static com.example.demo.util.ServiceUtil.CREATED_STATUS;
-import static com.example.demo.util.ServiceUtil.validateReviewText;
+import static com.example.demo.util.ServiceUtil.*;
 
 @Service
 public class AirlineService {
@@ -55,6 +54,7 @@ public class AirlineService {
         validateAirlineRegistration(createAirlineRequestDto);
         Airline airline = new Airline(createAirlineRequestDto);
         airline.setStatus(CREATED_STATUS);
+        airline.setPictureUrl(DEFAULT_AIRLINE_IMAGE_URL);
         airline = airlineRepository.save(airline);
         return new AirlineDto(airline);
     }
@@ -99,6 +99,7 @@ public class AirlineService {
         Airline airline = findAirlineById(editAirlineDto.getId());
         airline.setName((editAirlineDto.getName()));
         airline.setAddress(editAirlineDto.getAddress());
+        airline.setPictureUrl(editAirlineDto.getPictureUrl());
         airline = airlineRepository.save(airline);
 
         return new AirlineDto(airline);

@@ -20,11 +20,14 @@ public class EditAirlineDto {
 
     private String status;
 
+    private String pictureUrl;
+
     public EditAirlineDto(Airline airline) {
         this.id = airline.getId();
         this.name = airline.getName();
         this.address = airline.getAddress();
         this.status = airline.getStatus();
+        this.pictureUrl = airline.getPictureUrl();
     }
 
 }

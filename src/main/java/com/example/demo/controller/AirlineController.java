@@ -6,6 +6,7 @@ import com.example.demo.model.dto.airline.GetAllFlightsForAirlineByDateDto;
 import com.example.demo.model.dto.flight.*;
 import com.example.demo.model.dto.ticket.CreateTicketRequestDto;
 import com.example.demo.model.dto.ticket.TicketDto;
+import com.example.demo.model.entity.Airline;
 import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.BookingRequest;
 import com.example.demo.service.AirlineService;
@@ -68,6 +69,12 @@ public class AirlineController {
     @GetMapping
     public List<AirlineDto> getAllAirlines() {
         return airlineService.getAllAirlines();
+    }
+
+    @GetMapping("/{id}")
+    public AirlineDto getAirlineById(@PathVariable int id) {
+        Airline airline = airlineService.findAirlineById(id);
+        return new AirlineDto(airline);
     }
 
     @GetMapping("/{id}/bookings")

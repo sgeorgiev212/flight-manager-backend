@@ -44,6 +44,8 @@ public class Airline {
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Passenger manager;
 
+    private String pictureUrl;
+
     public Airline(CreateAirlineRequestDto createAirlineRequestDto) {
         this.name = createAirlineRequestDto.getName();
         this.address = createAirlineRequestDto.getAddress();

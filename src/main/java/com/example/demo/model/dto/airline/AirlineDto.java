@@ -22,6 +22,8 @@ public class AirlineDto {
 
     private int managerId;
 
+    private String pictureUrl;
+
     public AirlineDto(Airline airline) {
         this.id = airline.getId();
         this.name = airline.getName();
@@ -30,5 +32,6 @@ public class AirlineDto {
         if (airline.getManager() != null) {
             this.managerId = airline.getManager().getId();
         }
+        this.pictureUrl = airline.getPictureUrl();
     }
 }
