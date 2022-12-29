@@ -1,13 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.dto.airline.AddAirlineReviewDto;
+import com.example.demo.model.dto.passenger.*;
 import com.example.demo.model.dto.ticket.PassengerTicketDto;
 import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
-import com.example.demo.model.dto.passenger.LoginRequestDto;
-import com.example.demo.model.dto.passenger.PassengerDto;
-import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
-import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.TravelAgencyReview;
@@ -19,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/passenger")
-@CrossOrigin(origins="http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8080")
 public class PassengerController {
 
     @Autowired
@@ -33,6 +30,11 @@ public class PassengerController {
     @PostMapping("/login")
     public PassengerDto login(@RequestBody LoginRequestDto loginRequestDto) {
         return passengerService.login(loginRequestDto);
+    }
+
+    @PutMapping("/{id}")
+    public PassengerDto editPofile(@RequestBody EditProfileDto editProfileDto, @PathVariable int id) {
+        return passengerService.editPofile(editProfileDto, id);
     }
 
     @GetMapping("/{id}/bookings")
@@ -52,12 +54,12 @@ public class PassengerController {
 
     @PostMapping("/reviews/agency")
     public TravelAgencyReview addReviewForTravelAgency(@RequestBody AddTravelAgencyReviewDto addTravelAgencyReviewDto) {
-          return passengerService.addReviewForTravelAgency(addTravelAgencyReviewDto);
+        return passengerService.addReviewForTravelAgency(addTravelAgencyReviewDto);
     }
 
     @PostMapping("/reviews/airline")
     public AirlineReview addReviewForAirline(@RequestBody AddAirlineReviewDto airlineReviewDto) {
-       return passengerService.addReviewForAirline(airlineReviewDto);
+        return passengerService.addReviewForAirline(airlineReviewDto);
     }
 
     @GetMapping("/{id}")

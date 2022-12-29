@@ -2,12 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.model.dto.airline.AddAirlineReviewDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
-import com.example.demo.model.dto.passenger.LoginRequestDto;
-import com.example.demo.model.dto.passenger.PassengerDto;
-import com.example.demo.model.dto.passenger.RegisterPassengerRequestDto;
-import com.example.demo.model.dto.passenger.RegisterPassengerResponseDto;
+import com.example.demo.model.dto.passenger.*;
 import com.example.demo.model.dto.ticket.PassengerTicketDto;
-import com.example.demo.model.dto.ticket.TicketDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.Passenger;
@@ -24,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.example.demo.util.ServiceUtil.NOT_DEFINED;
 import static com.example.demo.util.ServiceUtil.PASSWORD_PATTERN;
 
 @Service
@@ -44,6 +41,7 @@ public class PassengerService {
     public RegisterPassengerResponseDto registerPassenger(RegisterPassengerRequestDto registerPassengerDto) {
         validateRegisterPassengerDto(registerPassengerDto);
         Passenger passenger = new Passenger(registerPassengerDto);
+        passenger.setAddress(NOT_DEFINED);
         passenger = passengerRepository.save(passenger);
         return new RegisterPassengerResponseDto(passenger);
 
@@ -66,6 +64,12 @@ public class PassengerService {
         } else {
             throw new IllegalArgumentException("Passenger with email: " + email + " was not found!");
         }
+    }
+
+    public PassengerDto editPofile(EditProfileDto editProfileDto, int passengerId) {
+        Passenger passenger = findPassengerById(passengerId);
+        Passenger updatedPassenger = checkAndApplyChanges(editProfileDto, passenger);
+        return new PassengerDto(updatedPassenger);
     }
 
     public List<BookingRequestDto> getAllBookingsForUser(int id) {
@@ -146,6 +150,46 @@ public class PassengerService {
 
     private RegisterPassengerResponseDto getRegisterResponse(Passenger passenger) {
         return new RegisterPassengerResponseDto(passenger);
+    }
+
+    private Passenger checkAndApplyChanges(EditProfileDto editProfileDto, Passenger passenger) {
+        String firstName = editProfileDto.getFirstName();
+        if (firstName.length() == 1) {
+            throw new IllegalArgumentException("First name must be at least 2 characters long!");
+        } else {
+            if (firstName.length() >= 2) {
+                passenger.setFirstName(firstName);
+            }
+        }
+
+        String lastName = editProfileDto.getLastName();
+        if (lastName.length() == 1) {
+            throw new IllegalArgumentException("Last name must be at least 2 characters long!");
+        } else {
+            if (lastName.length() >= 2) {
+                passenger.setLastName(lastName);
+            }
+        }
+
+        String email = editProfileDto.getEmail();
+        if (email.length() == 1) {
+            throw new IllegalArgumentException("Email name must be at least 10 characters long!");
+        } else {
+            if (email.length() >= 10) {
+                passenger.setEmail(email);
+            }
+        }
+
+        String address = editProfileDto.getAddress();
+        if (address.length() == 1) {
+            throw new IllegalArgumentException("Address name must be at least 10 characters long!");
+        } else {
+            if (address.length() >= 10) {
+                passenger.setAddress(address);
+            }
+        }
+
+        return passengerRepository.save(passenger);
     }
 
 }
