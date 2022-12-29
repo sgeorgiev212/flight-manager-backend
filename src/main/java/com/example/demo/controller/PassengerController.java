@@ -33,8 +33,13 @@ public class PassengerController {
     }
 
     @PutMapping("/{id}")
-    public PassengerDto editPofile(@RequestBody EditProfileDto editProfileDto, @PathVariable int id) {
-        return passengerService.editPofile(editProfileDto, id);
+    public PassengerDto editProfile(@RequestBody EditProfileDto editProfileDto, @PathVariable int id) {
+        return passengerService.editProfile(editProfileDto, id);
+    }
+
+    @PutMapping("/{id}/password")
+    public PassengerDto changePassword(@RequestBody ChangePasswordDto changePasswordDto, @PathVariable int id) {
+        return passengerService.changePassword(changePasswordDto, id);
     }
 
     @GetMapping("/{id}/bookings")

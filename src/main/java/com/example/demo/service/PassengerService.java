@@ -66,10 +66,16 @@ public class PassengerService {
         }
     }
 
-    public PassengerDto editPofile(EditProfileDto editProfileDto, int passengerId) {
+    public PassengerDto editProfile(EditProfileDto editProfileDto, int passengerId) {
         Passenger passenger = findPassengerById(passengerId);
         Passenger updatedPassenger = checkAndApplyChanges(editProfileDto, passenger);
         return new PassengerDto(updatedPassenger);
+    }
+
+    public PassengerDto changePassword(ChangePasswordDto changePasswordDto, int passengerId) {
+         Passenger passenger = findPassengerById(passengerId);
+         passenger = changePassword(changePasswordDto, passenger);
+         return new PassengerDto(passenger);
     }
 
     public List<BookingRequestDto> getAllBookingsForUser(int id) {
@@ -190,6 +196,33 @@ public class PassengerService {
         }
 
         return passengerRepository.save(passenger);
+    }
+
+    private Passenger changePassword(ChangePasswordDto changePasswordDto, Passenger passenger) {
+        String password = changePasswordDto.getPassword();
+        String newPassword = changePasswordDto.getNewPassword();
+
+        String encryptedPassword = passenger.getPassword();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (!encoder.matches(password, encryp tedPassword)) {
+            throw new IllegalArgumentException("Wrong current password!");
+        }
+
+        Pattern passwordPattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = passwordPattern.matcher(newPassword);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("New password must contain at least one lowercase character [a-z],\n" +
+                    "at least one uppercase character [A-Z],\n" +
+                    "at least one special character like ! @ # & ( ),\n" +
+                    "");
+        }
+
+        String encodedNewPassword = encoder.encode(newPassword);
+        passenger.setPassword(encodedNewPassword);
+        passenger = passengerRepository.save(passenger);
+
+        return passenger;
     }
 
 }
