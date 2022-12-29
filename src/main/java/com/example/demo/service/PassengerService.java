@@ -20,8 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.example.demo.util.ServiceUtil.NOT_DEFINED;
-import static com.example.demo.util.ServiceUtil.PASSWORD_PATTERN;
+import static com.example.demo.util.ServiceUtil.*;
 
 @Service
 public class PassengerService {
@@ -42,6 +41,9 @@ public class PassengerService {
         validateRegisterPassengerDto(registerPassengerDto);
         Passenger passenger = new Passenger(registerPassengerDto);
         passenger.setAddress(NOT_DEFINED);
+        passenger.setPictureUrl(DEFAULT_IMAGE_URL);
+        passenger.setPhoneNumber(NOT_DEFINED);
+        passenger.setAge(NOT_DEFINED);
         passenger = passengerRepository.save(passenger);
         return new RegisterPassengerResponseDto(passenger);
 
@@ -195,6 +197,21 @@ public class PassengerService {
             }
         }
 
+        String newPictureUrl = editProfileDto.getPictureUrl();
+        if (!passenger.getPictureUrl().equals(newPictureUrl)) {
+            passenger.setPictureUrl(newPictureUrl);
+        }
+
+        String newPhoneNumber = editProfileDto.getPhoneNumber();
+        if (!passenger.getPhoneNumber().equals(newPhoneNumber)) {
+            passenger.setPhoneNumber(newPhoneNumber);
+        }
+
+        String age = editProfileDto.getAge();
+        if (!passenger.getAge().equals(age)) {
+            passenger.setAge(age);
+        }
+
         return passengerRepository.save(passenger);
     }
 
@@ -205,7 +222,7 @@ public class PassengerService {
         String encryptedPassword = passenger.getPassword();
         PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if (!encoder.matches(password, encryp tedPassword)) {
+        if (!encoder.matches(password, encryptedPassword)) {
             throw new IllegalArgumentException("Wrong current password!");
         }
 

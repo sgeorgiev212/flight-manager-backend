@@ -22,6 +22,12 @@ public class RegisterPassengerResponseDto {
 
     private String address;
 
+    private String pictureUrl;
+
+    private String phoneNumber;
+
+    private String age;
+
     public RegisterPassengerResponseDto(Passenger passenger) {
 
         this.id = passenger.getId();
@@ -29,6 +35,9 @@ public class RegisterPassengerResponseDto {
         this.lastName = passenger.getLastName();
         this.email = passenger.getEmail();
         this.address = passenger.getAddress();
+        this.pictureUrl = passenger.getPictureUrl();
+        this.phoneNumber = passenger.getPhoneNumber();
+        this.age = passenger.getAge();
 
     }
 }

@@ -19,4 +19,10 @@ public class EditProfileDto {
 
     private String address;
 
+    private String pictureUrl;
+
+    private String phoneNumber;
+
+    private String age;
+
 }

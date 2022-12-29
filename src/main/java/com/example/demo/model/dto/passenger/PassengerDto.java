@@ -28,6 +28,12 @@ public class PassengerDto {
 
     private String role;
 
+    private String pictureUrl;
+
+    private String phoneNumber;
+
+    private String age;
+
     private List<BookingRequest> bookingRequests;
 
     private List<Ticket> tickets;
@@ -39,6 +45,9 @@ public class PassengerDto {
         this.email = passenger.getEmail();
         this.address = passenger.getAddress();
         this.role = passenger.getRole();
+        this.pictureUrl = passenger.getPictureUrl();
+        this.phoneNumber = passenger.getPhoneNumber();
+        this.age = passenger.getAge();
         this.bookingRequests = passenger.getBookingRequests();
         this.tickets = passenger.getTickets();
     }

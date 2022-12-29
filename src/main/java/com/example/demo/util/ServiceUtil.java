@@ -15,6 +15,9 @@ public class ServiceUtil {
 
     public static final String NOT_DEFINED = "Not defined";
 
+    public static final String DEFAULT_IMAGE_URL =
+            "https://media.istockphoto.com/id/1130884625/vector/user-member-vector-icon-for-ui-user-interface-or-profile-face-avatar-app-in-circle-design.jpg?s=612x612&w=0&k=20&c=1ky-gNHiS2iyLsUPQkxAtPBWH1BZt0PKBB1WBtxQJRE=";
+
     public static void validateReviewText(String text) {
         if (text.trim().isEmpty()) {
             throw new IllegalArgumentException("Review text must not be empty.");

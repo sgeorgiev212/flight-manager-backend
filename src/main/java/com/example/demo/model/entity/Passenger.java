@@ -37,6 +37,12 @@ public class Passenger {
 
     private String role;
 
+    private String pictureUrl;
+
+    private String phoneNumber;
+
+    private String age;
+
     @OneToMany(mappedBy = "passengerHasBooking")
     @JsonManagedReference
     private List<BookingRequest> bookingRequests;
