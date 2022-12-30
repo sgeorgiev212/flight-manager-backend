@@ -1,26 +1,19 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.dto.airline.AddAirlineReviewDto;
+import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.passenger.*;
 import com.example.demo.model.dto.ticket.PassengerTicketDto;
-import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.TravelAgencyReview;
 import com.example.demo.service.PassengerService;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import static com.example.demo.util.ServiceUtil.RESET_PASSWORD_LINK;
 
 @RestController
 @RequestMapping("/passenger")
@@ -89,36 +82,7 @@ public class PassengerController {
     }
 
     @PostMapping("/resetPassword/{email}")
-    public void handleForgotPasswordRequest(@PathVariable String email) {
-
-        String token = RandomString.make(45);
-        passengerService.updateResetPasswordToken(token, email);
-        String resetPasswordLink = RESET_PASSWORD_LINK + "?token=" + token;
-        sendEmail(email, resetPasswordLink);
+    public String handleForgotPasswordRequest(@PathVariable String email) {
+          return passengerService.handleForgotPasswordRequest(email);
     }
-
-    private void sendEmail(String email, String resetPasswordLink) {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        try {
-            helper.setFrom("airlineManager@gmail.com", "Password support");
-            helper.setTo(email);
-
-            String subject = "Use this link to reset your password";
-
-            String content = "<p>Hello,</p>"
-                    + "<p>You have requested to reset your password.</p>"
-                    + "<p>Click the link below to change your password:</p>"
-                    + "<p><b><a href=\"" + resetPasswordLink + "\">Change my password</a></b></p>";
-
-            helper.setSubject(subject);
-            helper.setText(content, true);
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        mailSender.send(message);
-    }
-
 }
