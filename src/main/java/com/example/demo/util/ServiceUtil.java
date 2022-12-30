@@ -21,6 +21,8 @@ public class ServiceUtil {
     public static final String DEFAULT_AIRLINE_IMAGE_URL =
             "https://images.squarespace-cdn.com/content/v1/5b989c06e2ccd197e85cc797/1574639810264-E3IBGH4B9SDTC9K9VC7L/airline-digital-transformat.jpg";
 
+    public static final String RESET_PASSWORD_LINK = "http://localhost:8080/resetPassword";
+
     public static void validateReviewText(String text) {
         if (text.trim().isEmpty()) {
             throw new IllegalArgumentException("Review text must not be empty.");

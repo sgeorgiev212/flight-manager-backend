@@ -11,6 +11,6 @@ public interface PassengerRepository extends JpaRepository<Passenger, Integer> {
 
     Optional<Passenger> findByEmail(String email);
 
-
+    Passenger findByResetPasswordToken(String token);
 
 }

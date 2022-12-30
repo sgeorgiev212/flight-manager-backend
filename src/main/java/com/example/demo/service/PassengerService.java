@@ -9,10 +9,12 @@ import com.example.demo.model.entity.AirlineReview;
 import com.example.demo.model.entity.Passenger;
 import com.example.demo.model.entity.TravelAgencyReview;
 import com.example.demo.repository.PassengerRepository;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -75,9 +77,9 @@ public class PassengerService {
     }
 
     public PassengerDto changePassword(ChangePasswordDto changePasswordDto, int passengerId) {
-         Passenger passenger = findPassengerById(passengerId);
-         passenger = changePassword(changePasswordDto, passenger);
-         return new PassengerDto(passenger);
+        Passenger passenger = findPassengerById(passengerId);
+        passenger = changePassword(changePasswordDto, passenger);
+        return new PassengerDto(passenger);
     }
 
     public List<BookingRequestDto> getAllBookingsForUser(int id) {
@@ -111,6 +113,64 @@ public class PassengerService {
         return airlineService.addReviewForAirline(addAirlineReviewDto, passenger);
     }
 
+    public void updateResetPasswordToken(String token, String email) {
+        Optional<Passenger> passengerByEmail = passengerRepository.findByEmail(email);
+        if (passengerByEmail.isEmpty()) {
+            throw new IllegalArgumentException("Passenger with email: " + email + " was not found!");
+        }
+
+        Passenger passenger = passengerByEmail.get();
+        passenger.setResetPasswordToken(token);
+        passengerRepository.save(passenger);
+    }
+
+    public void setNewPassword(ResetPasswordDto resetPasswordDto) {
+        if (!resetPasswordDto.getNewPassword().equals(resetPasswordDto.getConfirmNewPassword())) {
+            throw new IllegalArgumentException("Passwords must match!");
+        }
+        Passenger passenger = findPassengerByToken(resetPasswordDto.getToken());
+
+        updatePassword(passenger, resetPasswordDto.getNewPassword());
+        passenger.setResetPasswordToken(null);
+        passengerRepository.save(passenger);
+    }
+    
+    public Passenger findPassengerByToken(String token) {
+        Passenger passenger = passengerRepository.findByResetPasswordToken(token);
+        if (passenger == null) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+
+        return passenger;
+    }
+
+    public void updatePassword(Passenger passenger, String newPassword) {
+        if (newPassword == null || newPassword.length() < 8 || newPassword.length() > 20) {
+            throw new IllegalArgumentException("Password must be between 8 and 20 characters long!");
+        }
+
+        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = pattern.matcher(newPassword);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Password must contain at least one lowercase character [a-z],\n" +
+                    "at least one uppercase character [A-Z],\n" +
+                    "at least one special character like ! @ # & ( ),\n" +
+                    "");
+        }
+
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(newPassword);
+
+        passenger.setPassword(encodedPassword);
+        passengerRepository.save(passenger);
+    }
+
+    public void handleForgotPasswordRequest(String email) {
+        String token = RandomString.make(45);
+        updateResetPasswordToken(token, email);
+        String resetPasswordLink = RESET_PASSWORD_LINK + "?token=" + token;
+    }
+
     public Passenger findPassengerById(int passengerId) {
         Optional<Passenger> passenger = passengerRepository.findById(passengerId);
 
@@ -120,7 +180,7 @@ public class PassengerService {
 
         return passenger.get();
     }
-
+    
     private void validateRegisterPassengerDto(RegisterPassengerRequestDto registerPassengerRequestDto) {
         if (registerPassengerRequestDto.getFirstName().length() < 2) {
             throw new IllegalArgumentException("First name must be at least 2 characters long!");

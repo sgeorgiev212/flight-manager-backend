@@ -43,6 +43,8 @@ public class Passenger {
 
     private String age;
 
+    private String resetPasswordToken;
+
     @OneToMany(mappedBy = "passengerHasBooking")
     @JsonManagedReference
     private List<BookingRequest> bookingRequests;
