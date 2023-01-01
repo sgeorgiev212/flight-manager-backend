@@ -49,4 +49,9 @@ public class TravelAgencyController {
         return travelAgencyService.cancelBooking(id, bookingId);
     }
 
+    @DeleteMapping("/{id}/review/{reviewId}")
+    public void deleteReviewForAgency(@PathVariable int id, @PathVariable int reviewId) {
+        travelAgencyService.deleteReviewForAgency(id, reviewId);
+    }
+
 }

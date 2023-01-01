@@ -5,15 +5,13 @@ import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.dto.travelAgency.EditTravelAgencyDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
 import com.example.demo.model.dto.travelAgency.TravelAgencyDto;
-import com.example.demo.model.entity.BookingRequest;
-import com.example.demo.model.entity.Passenger;
-import com.example.demo.model.entity.TravelAgency;
-import com.example.demo.model.entity.TravelAgencyReview;
+import com.example.demo.model.entity.*;
 import com.example.demo.repository.BookingRequestRepository;
 import com.example.demo.repository.TravelAgencyRepository;
 import com.example.demo.repository.TravelAgencyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -114,6 +112,25 @@ public class TravelAgencyService {
         findAgencyById(agencyId);
         BookingRequest bookingRequest = bookingRequestService.findBookingRequestById(bookingId);
         return bookingRequestService.deleteBookingRequest(bookingRequest);
+    }
+
+    public void deleteReviewForAgency(int agencyId, int reviewId) {
+        TravelAgency agency = findAgencyById(agencyId);
+
+        List<TravelAgencyReview> reviews = agency.getReviews();
+        Optional<TravelAgencyReview> reviewByID = reviews.stream()
+                .filter(review -> review.getId() == reviewId)
+                .findFirst();
+
+        if (reviewByID.isEmpty()) {
+            throw new IllegalArgumentException("Review with id " + reviewId + " was not found!");
+        }
+
+        TravelAgencyReview review = reviewByID.get();
+        reviews.remove(review);
+        agency.setReviews(reviews);
+        travelAgencyRepository.save(agency);
+        travelAgencyReviewRepository.delete(review);
     }
 
     public TravelAgency findAgencyById(int agencyId) {
