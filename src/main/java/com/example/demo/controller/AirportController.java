@@ -1,12 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.dto.airport.EditAirportDto;
 import com.example.demo.model.entity.Airport;
 import com.example.demo.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,11 @@ public class AirportController {
     @GetMapping
     public List<Airport> getAllAirports() {
         return airportService.getAllAirports();
+    }
+
+    @PutMapping()
+    public Airport editAirport(@RequestBody EditAirportDto editAirportDto) {
+          return airportService.editAirport(editAirportDto);
     }
 
 }

@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAirportDto implements AirportDto{
+public class EditAirportDto implements AirportDto{
+
+    private int id;
 
     private String name;
 
     private String country;
-
 }
