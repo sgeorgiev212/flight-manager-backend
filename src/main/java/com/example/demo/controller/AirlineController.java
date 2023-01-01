@@ -116,4 +116,9 @@ public class AirlineController {
     public AirlineDto findAirlineByManagerId(@PathVariable int id) {
          return airlineService.findAirlineByManagerId(id);
     }
+
+    @DeleteMapping("/{id}/review/{reviewId}")
+    public void deleteReviewForAirline(@PathVariable int id, @PathVariable int reviewId) {
+        airlineService.deleteReviewForAirline(id, reviewId);
+    }
 }

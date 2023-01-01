@@ -13,8 +13,6 @@ import com.example.demo.model.entity.Passenger;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -171,6 +169,24 @@ public class AirlineService {
         airline.setManager(manager);
         airline = airlineRepository.save(airline);
         return new AirlineDto(airline);
+    }
+
+    public void deleteReviewForAirline(int airlineId, int reviewId) {
+        Airline airline = findAirlineById(airlineId);
+        List<AirlineReview> reviews = airline.getReviews();
+        Optional<AirlineReview> reviewByID = reviews.stream()
+                .filter(review -> review.getId() == reviewId)
+                .findFirst();
+
+        if (reviewByID.isEmpty()) {
+            throw new IllegalArgumentException("Review with id " + reviewId + " was not found!");
+        }
+
+        AirlineReview review = reviewByID.get();
+        reviews.remove(review);
+        airline.setReviews(reviews);
+        airlineRepository.save(airline);
+        airlineReviewRepository.delete(review);
     }
 
     public AirlineDto findAirlineByManagerId(int id) {
