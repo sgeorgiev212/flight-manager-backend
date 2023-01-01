@@ -194,7 +194,7 @@ public class PassengerService {
 
             String content = "<p>Hello,</p>"
                     + "<p>You have requested to reset your password.</p>"
-                    + "<p>Click the link below to change your password:</p>"
+                    + "<p>Click the link below and create your new password</p>"
                     + "<p><b><a href=\"" + resetPasswordLink + "\">Change my password</a></b></p>";
 
             helper.setSubject(subject);
