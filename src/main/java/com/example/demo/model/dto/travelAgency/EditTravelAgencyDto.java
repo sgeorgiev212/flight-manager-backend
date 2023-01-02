@@ -18,10 +18,13 @@ public class EditTravelAgencyDto {
 
     private String address;
 
+    private String pictureUrl;
+
     public EditTravelAgencyDto(TravelAgency travelAgency) {
         this.id = travelAgency.getId();
         this.name = travelAgency.getName();
         this.address = travelAgency.getAddress();
+        this.pictureUrl = travelAgency.getPictureUrl();
     }
 
 }

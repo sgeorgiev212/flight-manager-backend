@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.travelAgency.EditTravelAgencyDto;
 import com.example.demo.model.dto.travelAgency.RegisterTravelAgencyRequestDto;
@@ -58,6 +57,11 @@ public class TravelAgencyController {
     @GetMapping("/manager/{id}")
     public TravelAgencyDto findAirlineByManagerId(@PathVariable int id) {
         return travelAgencyService.findAgencyByManagerId(id);
+    }
+
+    @GetMapping("/{id}")
+    public TravelAgencyDto findTravelAgencyById(@PathVariable int id) {
+        return new TravelAgencyDto(travelAgencyService.findAgencyById(id));
     }
 
 }
