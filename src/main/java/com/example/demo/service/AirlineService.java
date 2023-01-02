@@ -121,7 +121,7 @@ public class AirlineService {
 
         return bookingRequestRepository.findByAirlineId(airlineId)
                 .stream()
-                .filter(bookingRequest -> bookingRequest.getTravelAgency() == null)
+                .filter(bookingRequest -> bookingRequest.getApprover().equals(AIRLINE))
                 .map(bookingRequest -> new BookingRequestDto(bookingRequest))
                 .collect(Collectors.toList());
     }

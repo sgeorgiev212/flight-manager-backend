@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.example.demo.util.ServiceUtil.REGISTERED_TRAVEL_AGENCY_STATUS;
-import static com.example.demo.util.ServiceUtil.validateReviewText;
+import static com.example.demo.util.ServiceUtil.*;
 
 @Service
 public class TravelAgencyService {
@@ -105,6 +104,7 @@ public class TravelAgencyService {
 
         return bookingRequestRepository.findAllByAgencyId(agencyId)
                 .stream()
+                .filter(bookingRequest -> bookingRequest.getApprover().equals(AGENCY))
                 .map(bookingRequest -> new BookingRequestDto(bookingRequest))
                 .collect(Collectors.toList());
     }
@@ -151,6 +151,12 @@ public class TravelAgencyService {
         }
 
         return travelAgency.get();
+    }
+
+    public void sendBookingRequestToAirline(int id) {
+        BookingRequest bookingRequest = bookingRequestService.findBookingRequestById(id);
+        bookingRequest.setApprover(AIRLINE);
+        bookingRequestRepository.save(bookingRequest);
     }
 
     private void verifyEditAgencyDetails(EditTravelAgencyDto editTravelAgencyDto) {

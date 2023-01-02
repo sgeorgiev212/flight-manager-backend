@@ -40,4 +40,6 @@ public class BookingRequest {
     @JoinColumn(name="flight_id")
     private Flight flight;
 
+    private String approver;
+
 }

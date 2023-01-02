@@ -64,4 +64,9 @@ public class TravelAgencyController {
         return new TravelAgencyDto(travelAgencyService.findAgencyById(id));
     }
 
+    @PutMapping("/bookings/{id}")
+    public void sendBookingRequestToAirline(@PathVariable int id) {
+        travelAgencyService.sendBookingRequestToAirline(id);
+    }
+
 }

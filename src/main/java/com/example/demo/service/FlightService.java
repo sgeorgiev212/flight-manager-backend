@@ -15,8 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.example.demo.util.ServiceUtil.ACTIVE_FLIGHT_STATUS;
-import static com.example.demo.util.ServiceUtil.CANCELED_FLIGHT_STATUS;
+import static com.example.demo.util.ServiceUtil.*;
 
 @Service
 public class FlightService {
@@ -129,6 +128,7 @@ public class FlightService {
         if (bookFlightRequestDto.getAgency() != null) {
             TravelAgency travelAgency = travelAgencyRepository.findByName(bookFlightRequestDto.getAgency());
             bookingRequest.setTravelAgency(travelAgency);
+            bookingRequest.setApprover(AGENCY);
         }
 
         Flight flight = flightRepository.findById(bookFlightRequestDto.getFlightId()).get();

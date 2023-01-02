@@ -22,6 +22,8 @@ public class BookingRequestDto {
 
     private int flightId;
 
+    private String approver;
+
     public BookingRequestDto(BookingRequest bookingRequest) {
         this.id = bookingRequest.getId();
         this.passengerId = bookingRequest.getPassengerHasBooking().getId();
@@ -32,6 +34,7 @@ public class BookingRequestDto {
 
         this.airline = bookingRequest.getAirline().getName();
         this.flightId = bookingRequest.getFlight().getId();
+        this.approver = bookingRequest.getApprover();
     }
 
 }

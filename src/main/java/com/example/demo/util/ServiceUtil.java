@@ -23,6 +23,10 @@ public class ServiceUtil {
 
     public static final String RESET_PASSWORD_LINK = "http://localhost:8080/resetPassword";
 
+    public static final String AGENCY = "AGENCY";
+
+    public static final String AIRLINE = "AIRLINE";
+
     public static void validateReviewText(String text) {
         if (text.trim().isEmpty()) {
             throw new IllegalArgumentException("Review text must not be empty.");
