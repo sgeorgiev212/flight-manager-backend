@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.dto.airline.AirlineDto;
 import com.example.demo.model.dto.flight.BookingRequestDto;
 import com.example.demo.model.dto.travelAgency.AddTravelAgencyReviewDto;
 import com.example.demo.model.dto.travelAgency.EditTravelAgencyDto;
@@ -131,6 +132,15 @@ public class TravelAgencyService {
         agency.setReviews(reviews);
         travelAgencyRepository.save(agency);
         travelAgencyReviewRepository.delete(review);
+    }
+
+    public TravelAgencyDto findAgencyByManagerId(int id) {
+        TravelAgency agency = travelAgencyRepository.findByManagerId(id);
+        if (agency == null) {
+            throw new IllegalArgumentException("Travel agency with manager id " + id + " was not found!");
+        }
+
+        return new TravelAgencyDto(agency);
     }
 
     public TravelAgency findAgencyById(int agencyId) {

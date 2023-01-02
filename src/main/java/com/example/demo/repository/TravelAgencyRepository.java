@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.entity.Airline;
 import com.example.demo.model.entity.TravelAgency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,7 @@ public interface TravelAgencyRepository extends JpaRepository<TravelAgency,Integ
     List<TravelAgency> findAllRegisteredAgencies();
 
     TravelAgency findByName(String name);
+
+    TravelAgency findByManagerId(int managerId);
 
 }

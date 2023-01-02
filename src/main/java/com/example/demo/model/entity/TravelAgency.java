@@ -27,6 +27,12 @@ public class TravelAgency {
 
     private String status;
 
+    @OneToOne
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    private Passenger manager;
+
+    private String pictureUrl;
+
     @OneToMany(mappedBy = "travelAgency")
     @JsonManagedReference
     private List<BookingRequest> bookingRequests;

@@ -20,10 +20,13 @@ public class TravelAgencyDto {
 
     private String status;
 
+    private String pictureUrl;
+
     public TravelAgencyDto(TravelAgency travelAgency) {
         this.id = travelAgency.getId();
         this.name = travelAgency.getName();
         this.address = travelAgency.getAddress();
         this.status = travelAgency.getStatus();
+        this.pictureUrl = travelAgency.getPictureUrl();
     }
 }

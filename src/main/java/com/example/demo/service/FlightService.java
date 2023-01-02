@@ -122,13 +122,14 @@ public class FlightService {
         Passenger passenger = passengerRepository.findById(bookFlightRequestDto.getPassengerId()).get();
         bookingRequest.setPassengerHasBooking(passenger);
 
-        if (bookFlightRequestDto.getAgencyId() != 0) {
-            TravelAgency travelAgency = travelAgencyRepository.findById(bookFlightRequestDto.getAgencyId()).get();
-            bookingRequest.setTravelAgency(travelAgency);
-        }
 
         Airline airline = airlineRepository.findByName(bookFlightRequestDto.getAirline());
         bookingRequest.setAirline(airline);
+
+        if (bookFlightRequestDto.getAgency() != null) {
+            TravelAgency travelAgency = travelAgencyRepository.findByName(bookFlightRequestDto.getAgency());
+            bookingRequest.setTravelAgency(travelAgency);
+        }
 
         Flight flight = flightRepository.findById(bookFlightRequestDto.getFlightId()).get();
         bookingRequest.setFlight(flight);
@@ -182,11 +183,6 @@ public class FlightService {
 
         if (passengerRepository.findById(passengerId).isEmpty()) {
             throw new IllegalArgumentException("Passenger with id: " + passengerId + " was not found!");
-        }
-
-        int agencyId = bookFlightRequestDto.getAgencyId();
-        if (agencyId != 0 && travelAgencyRepository.findById(agencyId).isEmpty()) {
-            throw new IllegalArgumentException("Travel agency with id: " + agencyId + " was not found!");
         }
 
         String airlineName = bookFlightRequestDto.getAirline();

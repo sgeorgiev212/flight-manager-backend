@@ -13,7 +13,7 @@ public class BookFlightRequestDto {
 
     private int passengerId;
 
-    private int agencyId;
+    private String agency;
 
     private String airline;
 
